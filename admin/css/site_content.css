@@ -1,0 +1,122 @@
+
+	#page-info-panel {
+		display: inline;
+		width: 100%;
+		height: 100%;
+		float: left;
+		position: relative;
+		background: url(../images/page_info_texture.png) repeat;
+	}
+	
+	
+	#page-info-panel p {
+		/*text-align: center;*/
+	}
+	
+	#page_info_top {
+		display: inline;
+		width: 100%;
+		height: 60px;
+		float: left;
+		margin-bottom: 15px;
+		background: url(../images/page_info_back.png) repeat-x top left;
+	}
+			
+			#page_info_top h1 {
+				width: 100%;
+				font-size: 14px;
+				font-weight: bold;
+				line-height: 60px;
+				background-position: top left;
+				background-repeat: no-repeat;
+				text-indent: 60px;
+			}
+			
+			#page_info_top .page_info {
+				background-image: url(../images/icons/page_info.png);
+			}
+			
+			#page_info_top .menu_item_info {
+				background-image: url(../images/icons/page_info.png);
+			}
+			
+			
+			
+	#page-info-panel table {
+		width: 90%;
+		float: left;
+		border-spacing: 0;
+		border-collapse: collapse;
+		font-size: 12px;
+		margin: 0 10px 15px 10px;
+	}
+	
+			#page-info-panel td, th {
+				border: 0;
+				padding: 5px;
+			}
+			
+			#page-info-panel th {
+				color: #333333;
+				font-weight: bold;
+				border-bottom: 1px dotted #CCC;
+			}
+			
+			#page-info-panel td {
+				font-size: 11px;
+			}
+	
+	.panel-footerWrapper li .new_page { background-image: url(../images/new_page.png); }
+	.panel-footerWrapper li .edit_page { background-image: url(../images/edit_page.png); }
+	
+	
+	#rightPanel .buttons li .edit_page { background-image: url(../images/edit_page.png); }
+	#rightPanel .buttons li .delete_page { background-image: url(../images/delete_page.png); }
+	#rightPanel .buttons li .view_page { background-image: url(../images/view_page.png); }
+	#rightPanel .buttons li .page_history { background-image: url(../images/page_history.png); }
+	
+	div.mochaToolbarWrapper.bottom li .ok { background-image: url(../images/tick.png); }
+	div.mochaToolbarWrapper.bottom li .cancel { background-image: url(../images/cross.png); }
+	
+			
+	#site_content_wrapper {
+		background: url(../images/page_info_texture.png) repeat;
+	}
+	
+	
+	#site_content_wrapper table {
+		width: 950px;
+		float: left;
+		border-spacing: 0;
+		border-collapse: collapse;
+		font-size: 12px;
+		margin: 20px 0 0 20px;
+	}
+	
+			#site_content_wrapper td, th {
+				border: 0;
+				padding: 5px;
+			}
+			
+			#site_content_wrapper th {
+				color: #333333;
+				font-weight: bold;
+				border-bottom: 1px dotted #CCC;
+			}
+			
+			#site_content_wrapper td {
+				font-size: 11px;
+			}
+			
+			
+			#site_content_wrapper .text_field {
+				width: 940px;
+				font-size: 16px;
+				padding: 5px;
+				border: 1px solid #ccc;	
+			}
+	
+	
+	
+	
+	
