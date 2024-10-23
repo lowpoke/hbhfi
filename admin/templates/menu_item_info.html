@@ -1,0 +1,54 @@
+<div id="page-info-panel">
+
+<div id="page_info_top">
+	<h1 class="page_info">{$item.Name}</h1>
+</div>
+
+<table>
+
+<tr>
+<th>Name</th>
+</tr>
+<tr>
+<td>{$item.Name}</td>
+</tr>
+
+<tr>
+<th>Type</th>
+</tr>
+<tr>
+<td>{$item.Type}</td>
+</tr>
+
+{if $show_destination}
+
+<tr>
+<th>Destination</th>
+</tr>
+<tr>
+<td>{$item.Destination}</td>
+</tr>
+
+{/if}
+
+{if $show_parent}
+
+<tr>
+<th>Parent</th>
+</tr>
+<tr>
+<td>{$item.Parent}</td>
+</tr>
+
+{/if}
+
+<tr>
+<th>Created</th>
+</tr>
+<tr>
+<td>{$item.Created}<em> by <strong>{$item.Created_By}</strong></em></td>
+</tr>
+
+</table>
+
+</div>

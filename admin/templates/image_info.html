@@ -1,0 +1,71 @@
+<div id="page-info-panel">
+
+{if $exif == true}
+
+<div class="image_preview">
+
+	<span class="{$image.orientation}"></span>
+	<img src="{$ROOT}inc/img.php?dimension=s150x113&amp;folder={$image.folder}&amp;image={$image.file_name}" class="{$image.orientation}" alt="" />
+
+</div>
+
+{/if}
+
+<table>
+
+{if $exif == true}
+
+<tr>
+<th>File Name</th>
+</tr>
+<tr>
+<td>{$image.file_name}</td>
+</tr>
+
+{/if}
+
+<tr>
+<th>File Path</th>
+</tr>
+<tr>
+<td>{$image.path}</td>
+</tr>
+
+<tr>
+<th>File URL</th>
+</tr>
+<tr>
+<td>{$image.url}</td>
+</tr>
+
+<tr>
+<th>Dimensions</th>
+</tr>
+<tr>
+<td>
+	Width: {$image.width}px<br />
+	Height: {$image.height}px
+</td>
+</tr>
+
+{if $exif == true}
+
+<tr>
+<th>File Size</th>
+</tr>
+<tr>
+<td>{$image.file_size}</td>
+</tr>
+
+<tr>
+<th>Last Modified</th>
+</tr>
+<tr>
+<td>{$image.file_date}</td>
+</tr>
+
+{/if}
+
+</table>
+
+</div>

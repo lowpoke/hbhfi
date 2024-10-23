@@ -1,0 +1,119 @@
+				<div id="tab_bar">
+					<h1>Edit Project</h1>
+					<ul>
+						<li class="selected"><a href="edit_project/{$project.project_id}">Project</a></li>
+						<li><a href="edit_project_images/{$project.project_id}">Images</a></li>
+					</ul>
+				</div>
+				
+				<div id="main">
+
+						<form id="edit_page" action="projects" method="post">
+							<input type="hidden" name="action" value="edit_project" />
+							<input type="hidden" name="project_id" value="{$project.project_id}" />
+							
+							<div id="page_details">
+							
+								<h3>Category</h3>
+								<p>
+									<select name="project_category" id="project_category" class="text_field ">
+										<option value="0">None</option>
+										<option value="1"{if $project.project_category == 1} selected="selected"{/if}>Vinyl</option>	
+										<option value="2"{if $project.project_category == 2} selected="selected"{/if}>Amps</option>	
+										<option value="3"{if $project.project_category == 3} selected="selected"{/if}>Speakers</option>	
+										<option value="4"{if $project.project_category == 4} selected="selected"{/if}>Digital</option>	
+										<option value="5"{if $project.project_category == 5} selected="selected"{/if}>Analog</option>	
+										<option value="6"{if $project.project_category == 6} selected="selected"{/if}>Mods</option>	
+									</select>
+								</p>
+								
+								<h3>Builder</h3>
+								<p>
+									<select name="project_builder" id="project_builder" class="text_field ">
+										<option value="0">None</option>
+{foreach from=$builders key=builderID item=builder} 
+										<option value="{$builder.builder_id}"{if $project.project_builder == $builder.builder_id} selected="selected"{/if}>{$builder.builder_short_name}</option>	
+{/foreach}
+									</select>
+								</p>
+
+								
+								<h3>Project Item</h3>
+								<p>
+									<input type="text" name="project_item" id="project_item" class="text_field medium_textbox" value="{$project.project_item}" />
+								</p>
+								
+								<h3>Project Name</h3>
+								<p>
+									<input type="text" name="project_name" id="project_name" class="text_field medium_textbox" value="{$project.project_name}" />
+								</p>
+								
+								<h3>Project Type</h3>
+								<p>
+									<input type="text" name="project_type" id="project_type" class="text_field medium_textbox" value="{$project.project_type}" />
+								</p>
+								
+								<h3>Project Description</h3>
+								<p>
+									<textarea name="project_description" rows="6" id="project_description" class="text_field medium_textbox">{$project.project_description}</textarea>
+								</p>								
+															
+							</div>
+							
+						</form>
+						
+						
+				</div>
+						
+						
+				<div class="buttons_bar">
+					<div class="loader"></div>
+					<ul class="right">
+						<li><span><a href="#" class="accept submit" id="save_page">Save</a></span></li>
+						<li><span><a href="projects" class="cancel">Cancel</a></span></li>
+					</ul>				
+				</div>
+				
+				<script type="text/javascript">
+				
+					var root_url = '{$ROOT|substr:0:-1}';
+				
+{literal}
+				
+									
+					
+					$('save_page').addEvent('click',function(e) {
+						
+						new Event(e).stop();
+						$$('.loader').each(function(loader) {
+						
+							$(loader).fade('in');
+														
+							$('edit_page').submit();
+						
+						});
+					
+					});
+									
+					
+					$$('.text_field').each(function(tf) {
+					
+						$(tf).addEvent('focus',function() {
+							$(tf).addClass('focus');
+						});
+						
+						$(tf).addEvent('blur',function() {
+							$(tf).removeClass('focus');
+						});
+					
+					});
+					
+					
+{/literal}
+				
+				</script>
+				
+				
+				
+				
+						

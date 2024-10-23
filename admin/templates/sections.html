@@ -1,0 +1,105 @@
+				<div id="tab_bar">
+					<h1>Site Content</h1>
+					<ul>
+					<!--	<li><a href="content/drafts">Drafts</a></li>-->
+						<li><a href="content/pages">Pages</a></li>
+						<li class="selected"><a href="content/sections">Sections</a></li>
+					</ul>
+				</div>
+				
+				<div class="buttons_bar">
+					
+					<p>{$num_sections}</p>
+					
+					<ul class="right">
+						<li><span><a href="content/new_section" class="new">New Section</a></span></li>
+					</ul>				
+				</div>
+				
+				
+				<div id="main">
+				
+					{$result}
+				
+					<table class="list" id="section_list">
+					
+						<tr>
+							<th style="width: 15px;">&nbsp;</th>
+							<th>Section</th>
+							<th>Default Page</th>
+							<th style="width: 200px;">Created</th>
+							<th style="width: 55px;"></th>
+						</tr>
+
+{foreach from=$sections key=sectionID item=section}
+						
+						<tr id="tr_{$section.ID}">
+							<td>{$section.ID}</td>
+							<td><strong>{$section.Name}</strong> &nbsp;</td>
+							<td>{$section.Default_Page} &nbsp;</td>
+							<td style="border: none;">{$section.Created}<em> by <strong>{$section.Created_By}</strong></em> &nbsp;</td>
+							<td style="border: none;">
+								<ul class="lil_buttons">
+									<li><a href="content/edit_section/{$section.ID}" class="edit" title="Edit '{$section.Name}'"></a></li>
+									<li><a href="#" class="delete" id="db_{$section.ID}" rel="{$section.Name}" title="Delete '{$section.Name}'"></a></li>
+								</ul>
+							</td>
+						</tr>
+
+{/foreach}		
+					
+					</table>				
+				
+				
+				</div>
+				
+				<div class="buttons_bar">
+					<ul class="right">
+						<li><span><a href="content/new_section" class="new" id="new_page">New Section</a></span></li>
+					</ul>				
+				</div>
+				
+				
+				<script type="text/javascript">
+								
+{literal}
+				
+					
+					$$('#section_list .delete').each(function(db) {
+					
+						$(db).addEvent('click',function(e) {
+							new Event(e).stop();
+							var section_name = $(db).get('rel');
+							var section_id = $(db).get('id').replace(/db_/,'');
+							
+							MochaUI.deleteSection = function(){	
+								new MochaUI.Window({
+									id: 'deleteSection',
+									title: 'Delete Section',
+									loadMethod: 'xhr',
+									contentURL: 'inc/delete_section.php?section_ID=' + section_id,
+									width: 300,
+									height: 60,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('deleteSection');
+										toolbar2_button(['ok','Delete',('content/sections/delete_section/' + section_id),''],'deleteSection');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('deleteSection').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'deleteSection');
+									}
+								});
+							}
+							
+							MochaUI.deleteSection();
+							
+						});
+						
+					});
+					
+				
+{/literal}
+				
+				</script>
+				
+				

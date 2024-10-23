@@ -1,0 +1,70 @@
+<div id="page-info-panel">
+
+<div id="page_info_top">
+	<h1 class="page_info">New User</h1>
+</div>
+
+<form id="new_user_post" action="user_accounts" method="post">
+
+<table>
+
+<tr>
+<th>Username</th>
+</tr>
+<tr>
+<td>
+<input type="text" name="username" id="username" class="small_textbox" style="width: 100%;" />
+<p>&nbsp;</p>
+</td>
+</tr>
+
+<tr>
+<th>First Name</th>
+</tr>
+<tr>
+<td>
+<input type="text" name="first_name" id="first_name" class="small_textbox" style="width: 100%;" />
+</td>
+</tr>
+
+<tr>
+<th>Last Name</th>
+</tr>
+<tr>
+<td>
+<input type="text" name="last_name" id="last_name" class="small_textbox" style="width: 100%;" />
+<p>&nbsp;</p>
+</td>
+</tr>
+
+<tr>
+<th>Password</th>
+</tr>
+<tr>
+<td>
+<input type="password" name="password" id="password" class="small_textbox" value="" style="width: 100%;" />
+<p>&nbsp;</p>
+</td>
+</tr>
+
+<tr>
+<th>Active</th>
+</tr>
+<tr>
+<td>
+
+<input type="radio" name="user_active" id="link_type_int" class="link_type" value="1" checked="checked" /> Yes &nbsp; &nbsp;
+<input type="radio" name="user_active" id="link_type_ext" class="link_type" value="0" /> No
+
+<p>&nbsp;</p>
+
+</td>
+</tr>
+
+</table>
+
+<input type="hidden" name="action" value="new_user" />
+
+</form>
+
+</div>

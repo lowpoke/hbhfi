@@ -1,0 +1,78 @@
+				<div id="tab_bar">
+					<h1>Edit Comment</h1>
+				</div>
+				
+				<div id="main">
+
+						<form id="edit_comment" action="comments" method="post">
+							<input type="hidden" name="action" value="edit_comment" />
+							<input type="hidden" name="comment_id" value="{$comment.comment_id}" />
+							
+							<div id="page_details">
+															
+								<p>&nbsp;</p>
+								
+								<h3>Comment</h3>
+								<p>
+									<textarea name="comment" rows="6" id="comment" class="text_field medium_textbox">{$comment.comment_comment}</textarea>
+								</p>								
+															
+							</div>
+							
+						</form>
+						
+						
+				</div>
+						
+						
+				<div class="buttons_bar">
+					<div class="loader"></div>
+					<ul class="right">
+						<li><span><a href="#" class="accept submit" id="save_comment">Save</a></span></li>
+						<li><span><a href="comments" class="cancel">Cancel</a></span></li>
+					</ul>				
+				</div>
+				
+				<script type="text/javascript">
+				
+					var root_url = '{$ROOT|substr:0:-1}';
+				
+{literal}
+				
+									
+					
+					$('save_comment').addEvent('click',function(e) {
+						
+						new Event(e).stop();
+						$$('.loader').each(function(loader) {
+						
+							$(loader).fade('in');
+														
+							$('edit_comment').submit();
+						
+						});
+					
+					});
+									
+					
+					$$('.text_field').each(function(tf) {
+					
+						$(tf).addEvent('focus',function() {
+							$(tf).addClass('focus');
+						});
+						
+						$(tf).addEvent('blur',function() {
+							$(tf).removeClass('focus');
+						});
+					
+					});
+					
+					
+{/literal}
+				
+				</script>
+				
+				
+				
+				
+						

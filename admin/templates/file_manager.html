@@ -1,0 +1,333 @@
+				<div id="tab_bar">
+					<h1>File Manager</h1>
+					<ul>
+						<li class="selected"><a href="file_manager">Files</a></li>
+					</ul>
+				</div>
+				
+				<div class="buttons_bar">		
+				
+				{if $show_contents == true}
+				
+					<p><strong>{$num_files} files in</strong> "files/{$cur_folder}"</p>
+					
+				{/if}
+					
+				</div>
+				
+				{$result}
+				
+				<div id="left_column">
+				
+					<h2>Folders</h2>
+					
+					<ul>
+					
+{foreach from=$folders key=folderID item=folder}
+					
+						<li id="folder_{$folderID}">
+							<a href="file_manager/{$folder.name}" class="folder"{if $cur_folder|substr:0:-1 == $folder.name} style="font-weight: bold;"{/if}>{$folder.name}</a>
+							<ul class="lil_buttons">
+								<li><a href="#" class="delete" rel="{$folder.name}" title="Delete '{$folder.name}'"></a></li>
+							</ul>
+						</li>
+						
+{/foreach}
+					
+					</ul>
+				
+				</div>
+				
+				<div id="right_column">
+				
+	{if $num_files > 0 && $cur_folder != ''}					
+					
+					<table class="list" id="files_list">
+					
+						<thead>
+						
+						<tr>
+							<th style="width: 250px;">File</th>
+							<th style="width: 70px;">Size</th>
+							<th style="width: 230px;">Type</th>
+							<th></th>
+						</tr>
+						
+						</thead>
+					
+						<tbody>
+
+		{foreach from=$files key=fileID item=file}
+
+						
+						<tr id="tr_{$fileID}">
+							<td>
+								<img src="images/file_types/{$file.icon}" alt="{$file.type}" style="vertical-align: middle; float: left;" /> &nbsp; 
+								<strong>{$file.short_name}</strong> &nbsp;
+							</td>
+							<td>{$file.size} &nbsp;</td>
+							<td style="border: none;">{$file.type} &nbsp;</td>
+							<td style="border: none;">
+								<ul class="lil_buttons">
+									<li style="margin-left: 15px;"><a href="#" class="info" id="ib_{$fileID}" rel="{$file.name}"></a></li>
+									<li><a href="#" class="delete" id="db_{$fileID}" rel="{$file.name}" title="Delete '{$file.name}'"></a></li>
+									<li><a href="{$ROOT}files/{$cur_folder}{$file.name}" class="view" id="vb_{$fileID}" title="View '{$file.name}'"></a></li>
+								</ul>
+							</td>
+						</tr>
+						
+		{/foreach}
+		
+					</tbody>
+					
+					</table>		
+					
+					
+					
+{elseif $cur_folder == ''}
+
+
+					<p style="text-align: center; margin-top: 100px;">
+						<img src="images/icons/arrow_left.png" alt="" /><br />
+						Select a folder to the left
+					</p>
+					
+{elseif $num_files == 0}
+					
+					<p style="text-align: center; margin-top: 100px;">
+						<img src="images/icons/box.png" alt="" /><br />
+						No files found in <strong>{$cur_folder}</strong>.
+					</p>
+					
+{/if}
+					
+					
+				</div>
+						
+						
+				<div class="buttons_bar">
+					<div class="loader"></div>					
+					<ul class="left">
+						<li><span><a href="#" class="new" id="new_folder">New Folder</a></span></li>
+					</ul>						
+					<ul class="right">
+						<li><span><a href="#" class="upload" id="upload">Upload</a></span></li>
+					</ul>				
+				</div>
+				
+				<script type="text/javascript">
+				
+					var root_url = '{$ROOT|substr:0:-1}';
+					var cur_folder = '{$cur_folder}';
+				
+{literal}
+				
+					
+					$$('li.img .lil_buttons').each(function(lb) {
+						$(lb).fade('hide');					
+					});
+					
+					$$('li.img').each(function(li) {
+						
+						$(li).addEvent('mouseover',function() {										
+							var ul = '#' + $(li).get('id');							
+							$$(ul + ' ul').fade('in');
+							$$(ul + ' p').fade('out');					
+						});				
+						
+						$(li).addEvent('mouseout',function() {										
+							var ul = '#' + $(li).get('id');							
+							$$(ul + ' ul').fade('out');		
+							$$(ul + ' p').fade('in');							
+						});		
+										
+					});
+					
+					
+					$$('#left_column .lil_buttons').each(function(lc) {
+						$(lc).fade('hide');					
+					});
+					
+					$$('#left_column li').each(function(lci) {
+						
+						$(lci).addEvent('mouseover',function() {										
+							var ul = '#' + $(lci).get('id');							
+							$$(ul + ' ul').fade('show');				
+						});				
+						
+						$(lci).addEvent('mouseout',function() {										
+							var ul = '#' + $(lci).get('id');							
+							$$(ul + ' ul').fade('hide');					
+						});		
+										
+					});
+
+					
+					
+					
+					$($('upload')).addEvent('click',function(e) {
+							new Event(e).stop();
+							
+							MochaUI.uploadWindow = function(){	
+								new MochaUI.Window({
+									id: 'uploadWindow',
+									title: 'Upload File',
+									loadMethod: 'xhr',
+									contentURL: 'inc/upload_file_image.php?type=file&file_destination=' + cur_folder,
+									width: 330,
+									height: 140,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('uploadWindow');
+										toolbar2_button(['ok','Upload','#',function(e){ new Event(e).stop(); $('upload_form').submit(); }],'uploadWindow');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('uploadWindow').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'uploadWindow');
+									}
+								});
+							}
+							
+							MochaUI.uploadWindow();
+							
+						});
+						
+				$($('new_folder')).addEvent('click',function(e) {
+							new Event(e).stop();
+							
+							MochaUI.newFolderWindow = function(){	
+								new MochaUI.Window({
+									id: 'newFolder',
+									title: 'New Folder',
+									loadMethod: 'xhr',
+									contentURL: 'inc/new_folder.php?type=file',
+									width: 300,
+									height: 120,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('newFolder');
+										toolbar2_button(['ok','Create','#',function(e){ new Event(e).stop(); $('new_folder_post').submit(); }],'newFolder');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('newFolder').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'newFolder');
+									}
+								});
+							}
+							
+							MochaUI.newFolderWindow();
+							
+						});
+						
+						
+						
+						
+				$$('$files_list .info').each(function(ib) {
+					
+						$(ib).addEvent('click',function(e) {
+							new Event(e).stop();
+							var file_data = $(ib).get('rel');
+							
+							var file = [];
+							
+							file['name'] = file_data;
+							file['folder'] = cur_folder;
+														
+							MochaUI.fileInfo = function(){	
+								new MochaUI.Window({
+									id: 'fileInfo',
+									title: 'File Information',
+									loadMethod: 'xhr',
+									contentURL: 'inc/file_info.php?file=' + file['name'] + '&folder=' + file['folder'],
+									width: 300,
+									height: 400,
+									toolbar2: true,
+									type: 'modal',
+									onContentLoaded: function() {
+										reset_toolbar2('fileInfo');
+										toolbar2_button(['ok','Close','#',function(e){ new Event(e).stop(); $('fileInfo').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'fileInfo');
+									}
+								});
+							}
+							
+							MochaUI.fileInfo();
+							
+						});
+						
+					});
+						
+				
+				$$('#files_list .delete').each(function(db) {
+					
+						$(db).addEvent('click',function(e) {
+							new Event(e).stop();
+							var file = $(db).get('rel');
+							
+							MochaUI.deleteImage = function(){	
+								new MochaUI.Window({
+									id: 'deleteImage',
+									title: 'Delete Image',
+									loadMethod: 'xhr',
+									contentURL: 'inc/delete_file.php?file=' + file + '&destination=files&folder=' + cur_folder,
+									width: 300,
+									height: 60,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('deleteImage');
+										toolbar2_button(['ok','Delete','#',function(e){ new Event(e).stop(); $('delete_file_post').submit(); }],'deleteImage');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('deleteImage').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'deleteImage');
+									}
+								});
+							}
+							
+							MochaUI.deleteImage();
+							
+						});
+						
+					});
+					
+					
+					
+					
+					$$('#left_column .delete').each(function(db) {
+					
+						$(db).addEvent('click',function(e) {
+							new Event(e).stop();
+							var del_folder = $(db).get('rel');
+							
+							MochaUI.deleteFolder = function(){	
+								new MochaUI.Window({
+									id: 'deleteFolder',
+									title: 'Delete Folder',
+									loadMethod: 'xhr',
+									contentURL: 'inc/delete_folder.php?folder=' + del_folder + '&destination=files',
+									width: 300,
+									height: 60,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('deleteFolder');
+										toolbar2_button(['ok','Delete','#',function(e){ new Event(e).stop(); $('delete_folder_post').submit(); }],'deleteFolder');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('deleteFolder').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'deleteFolder');
+									}
+								});
+							}
+							
+							MochaUI.deleteFolder();
+							
+						});
+						
+					});
+
+
+					
+					
+{/literal}
+				
+				</script>
+				
+				
+				
+				
+						

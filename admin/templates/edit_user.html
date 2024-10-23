@@ -1,0 +1,103 @@
+<div id="page-info-panel">
+
+<div id="page_info_top">
+	<h1 class="page_info">{$user.Username}</h1>
+</div>
+
+<form id="edit_user_post" action="user_accounts" method="post">
+
+<table>
+
+<tr>
+<th>Username</th>
+</tr>
+<tr>
+<td>
+<input type="text" name="username" id="username" class="small_textbox" value="{$user.Username}" style="width: 100%;" />
+<p>&nbsp;</p>
+</td>
+</tr>
+
+<tr>
+<th>First Name</th>
+</tr>
+<tr>
+<td>
+<input type="text" name="first_name" id="first_name" class="small_textbox" value="{$user.First_Name}" style="width: 100%;" />
+</td>
+</tr>
+
+<tr>
+<th>Last Name</th>
+</tr>
+<tr>
+<td>
+<input type="text" name="last_name" id="last_name" class="small_textbox" value="{$user.Last_Name}" style="width: 100%;" />
+<p>&nbsp;</p>
+</td>
+</tr>
+
+<tr>
+<th>Password</th>
+</tr>
+<tr>
+<td>
+<input type="checkbox" name="reset_password" id="reset_password" value="yes" /> &nbsp; Reset Password
+</td>
+</tr>
+<tr id="pass_field">
+<td>
+<input type="password" name="password" id="password" class="small_textbox" value="******" style="width: 100%;" />
+</td>
+</tr>
+
+<tr>
+<th>Active</th>
+</tr>
+<tr>
+<td>
+
+<input type="radio" name="user_active" id="link_type_int" class="link_type" value="1"{if $user.Active == '1'} checked="checked"{/if} /> Yes &nbsp; &nbsp;
+<input type="radio" name="user_active" id="link_type_ext" class="link_type" value="0"{if $user.Active == '0'} checked="checked"{/if} /> No
+
+<p>&nbsp;</p>
+
+</td>
+</tr>
+
+</table>
+
+<input type="hidden" name="user_ID" value="{$user.ID}" />
+<input type="hidden" name="action" value="edit_user" />
+
+</form>
+
+</div>
+
+				
+				<script type="text/javascript">
+{literal}
+
+					var pass_field = $('pass_field');
+					
+					pass_field.fade('hide');
+					
+					$('reset_password').addEvent('click',function() {
+					
+						var chk_state = $('reset_password').checked;
+						
+						if(chk_state)
+							{
+								pass_field.fade('in');
+							}
+						else
+							{
+								pass_field.fade('out');
+							}
+					
+					
+					});
+
+{/literal}
+				</script>
+

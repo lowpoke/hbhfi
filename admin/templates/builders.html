@@ -1,0 +1,165 @@
+				<div id="tab_bar">
+					<h1>Builders</h1>
+					<ul>
+						<li class="selected"><a href="builders">Builders</a></li>
+					</ul>
+				</div>
+				
+				<div class="buttons_bar">
+					
+					<p>{$num_builders}</p>
+					
+					<div style="position: absolute; top: 10px; right: 10px; width: 50%; text-align: right;">
+						<strong>View By: </strong> &nbsp;
+						
+						<select onchange="{literal}if(this.value != 0) { window.location = '/admin/builders/country/' + this.value }{/literal}">
+							<option value="0">Country...</option>
+							{foreach from=$country_list key=countryID item=country}
+							<option value="{$country.country|urlencode}"{if $view_by == $country.country} selected="selected"{/if}>{$country.country}</option>
+							{/foreach}
+						</select>
+						
+						<input type="button" value="Show All" onclick="window.location = '/admin/builders/all'" />
+						<input type="button" value="Download CSV" onclick="window.location = '/admin/builders_csv'" />
+					
+					</div>
+						
+				</div>
+				
+				
+				<div id="main">
+				
+					{$result}
+				
+					<table class="list" id="builders_list">
+					
+						<thead>
+						
+						<tr>
+							<th>Builder</th>
+							<th>Name</th>							
+							<th>Country</th>
+							<th>Email</th>
+							<th>Projects</th>
+							<th>Comments</th>
+						</tr>
+						
+						</thead>
+						
+						<tbody>
+
+{if $num_builders > 0}
+
+{foreach from=$builders key=builderID item=builder}
+						
+						<tr id="tr_{$builder.builder_id}">
+							<td><strong>{$builder.builder_short_name}</strong> &nbsp;</td>
+							<td>{$builder.builder_first_name} {$builder.builder_last_name} &nbsp;</td>
+							<td>{$builder.builder_country} &nbsp;</td>
+							<td>{$builder.builder_email} &nbsp;</td>
+							<td><a href="projects/builder/{$builder.builder_id}">{$builder.builder_projects} project{$builder.builder_projects|plural}</a> &nbsp;</td>
+							<td><a href="comments/builder/{$builder.builder_id}">{$builder.builder_comments} comment{$builder.builder_comments|plural}</a> &nbsp;</td>
+						</tr>
+
+{/foreach}
+
+{else}
+
+						<tr id="tr_{$project.project_id}">
+							<td colspan="7" style="text-align: center;"><strong>No projects found.</strong> &nbsp;</td>
+						</tr>
+
+{/if}	
+	
+
+					</tbody>
+					
+					</table>				
+				
+				
+				</div>
+								
+				<script type="text/javascript">
+								
+{literal}
+				
+							
+					
+					
+					$$('#builders_list .delete').each(function(db) {
+					
+						$(db).addEvent('click',function(e) {
+							new Event(e).stop();
+							var project_id = $(db).get('id').replace(/db_/,'');
+							
+							MochaUI.deletePage = function(){	
+								new MochaUI.Window({
+									id: 'deleteProject',
+									title: 'Delete Project',
+									loadMethod: 'xhr',
+									contentURL: 'inc/delete_project.php?project_ID=' + project_id,
+									width: 300,
+									height: 60,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('deleteProject');
+										toolbar2_button(['ok','Delete',('content/projects/delete_project/' + project_id),''],'deleteProject');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('deleteProject').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'deleteProject');
+									}
+								});
+							}
+							
+							MochaUI.deletePage();
+							
+						});
+						
+					});
+					
+					
+					
+					
+					$$('#builders_list .view').each(function(vb) {
+					
+						$(vb).addEvent('click',function(e) {
+							new Event(e).stop();
+							var page_name = $(vb).get('rel');
+							var page_id = $(vb).get('id').replace(/vb_/,'');
+							var page_URL = $(vb).get('href');
+							
+							MochaUI.viewPageWindow = function(){
+								new MochaUI.Window({
+									id: 'viewPage',
+									title: 'View Page',
+									loadMethod: 'iframe',
+									contentURL: page_URL,
+									width: 1100,
+									height: 700,
+									toolbar2: false,
+									type: 'modal',
+									closable: true,
+									toolbar2: true,
+									onContentLoaded: function() {
+										reset_toolbar2('viewPage');
+										toolbar2_button(['ok','Close','#',function(e){ new Event(e).stop(); $('viewPage').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'viewPage');
+									}
+								});
+							}
+							
+							MochaUI.viewPageWindow();
+							
+						});
+						
+					});
+					
+					
+					
+
+					
+				
+{/literal}
+				
+				</script>
+				
+				

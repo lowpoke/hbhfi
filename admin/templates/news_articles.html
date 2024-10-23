@@ -1,0 +1,161 @@
+				<div id="tab_bar">
+					<h1>News &amp; Articles</h1>
+					<ul>
+					<!--	<li><a href="content/drafts">Drafts</a></li>-->
+						<li class="selected"><a href="news_articles">Articles</a></li>
+						<li><a href="news_categories">Categories</a></li>
+					<!--	<li><a href="content/trash"{if $trash > 0} title="{$trash} item in trash"{/if}><img src="images/icons/trash.png" alt="" /></a> {if $trash > 0}<div class="badge">{$trash}</div>{/if} </li>-->
+					</ul>
+				</div>
+				
+				<div class="buttons_bar">
+					
+					<p>{$num_articles}</p>
+					
+					<ul class="right" id="new_page_btn1">
+						<li><span><a href="new_article" class="new">New Article</a></span></li>
+					</ul>				
+				</div>
+				
+				
+				<div id="main">
+				
+					{$result}
+				
+					<table class="list" id="article_list">
+					
+						<thead>
+						
+						<tr>
+							<th>Headline</th>
+							<th style="width: 150px;">Date/Time</th>
+							<th>URL</th>
+							<th style="width: 200px;">Created</th>
+							<th style="width: 105px;"></th>
+						</tr>
+						
+						</thead>
+						
+						<tbody>
+						
+{if $num_articles > 0}
+
+	{foreach from=$articles key=articleID item=article}
+						
+						<tr id="tr_{$article.ID}">
+							<td><strong>{$article.Headline}</strong> &nbsp;</td>
+							<td>{$article.Date_Time} &nbsp;</td>
+							<td>{$article.URL} &nbsp;</td>
+							<td style="border: none;">{$article.Created}<em> by <strong>{$article.Created_By}</strong></em> &nbsp;</td>
+							<td style="border: none;">
+								<ul class="lil_buttons">
+									<li><a href="edit_article/{$article.ID}" class="edit" title="Edit '{$article.Headline}'"></a></li>
+									<li><a href="#" class="delete" id="db_{$article.ID}" rel="{$article.ID}" title="Delete '{$article.Headline}'"></a></li>
+									<li><a href="{$ROOT}news/{$article.URL}" class="view" id="vb_{$article.ID}" rel="{$article.Headline}" title="View '{$article.Headline}'"></a></li>
+								</ul>
+							</td>
+						</tr>
+
+	{/foreach}		
+	
+{else}
+
+						<tr>
+							<td colspan="4" style="text-align: center;">There are no news articles.</td>
+						</tr>
+
+{/if}
+
+					</tbody>
+					
+					</table>				
+				
+				
+				</div>
+				
+				<div class="buttons_bar">
+					
+					<ul class="right" id="new_page_btn2">
+						<li><span><a href="new_article" class="new">New Article</a></span></li>
+					</ul>				
+
+				</div>
+				
+				<script type="text/javascript">
+								
+{literal}
+					
+					$$('#article_list .delete').each(function(db) {
+					
+						$(db).addEvent('click',function(e) {
+							new Event(e).stop();
+							var article_id = $(db).get('rel');
+							
+							MochaUI.deleteArticle = function(){	
+								new MochaUI.Window({
+									id: 'deleteArticle',
+									title: 'Delete Article',
+									loadMethod: 'xhr',
+									contentURL: 'inc/delete_article.php?article_ID=' + article_id,
+									width: 300,
+									height: 60,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('deleteArticle');
+										toolbar2_button(['ok','Delete',('news_articles/delete/' + article_id),''],'deleteArticle');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('deleteArticle').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'deleteArticle');
+									}
+								});
+							}
+							
+							MochaUI.deleteArticle();
+							
+						});
+						
+					});
+					
+					
+					
+					
+					$$('#article_list .view').each(function(vb) {
+					
+						$(vb).addEvent('click',function(e) {
+							new Event(e).stop();
+							var page_name = $(vb).get('rel');
+							var page_id = $(vb).get('id').replace(/vb_/,'');
+							var page_URL = $(vb).get('href');
+							
+							MochaUI.viewPageWindow = function(){
+								new MochaUI.Window({
+									id: 'viewPage',
+									title: 'View Page',
+									loadMethod: 'iframe',
+									contentURL: page_URL,
+									width: 1100,
+									height: 700,
+									toolbar2: false,
+									type: 'modal',
+									closable: true,
+									toolbar2: true,
+									onContentLoaded: function() {
+										reset_toolbar2('viewPage');
+										toolbar2_button(['ok','Close','#',function(e){ new Event(e).stop(); $('viewPage').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'viewPage');
+									}
+								});
+							}
+							
+							MochaUI.viewPageWindow();
+							
+						});
+						
+					});
+					
+					
+				
+{/literal}
+				
+				</script>
+				
+				

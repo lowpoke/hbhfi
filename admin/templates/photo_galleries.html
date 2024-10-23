@@ -1,0 +1,499 @@
+				<div id="tab_bar">
+					<h1>Photo Galleries</h1>
+				</div>
+				
+				<div class="buttons_bar">				
+					
+					{if $cur_gallery.ID != 0}
+					
+					<p>{$num_images} images in <strong>{$cur_gallery.Name}</strong></p>
+					
+					<ul class="right" id="re_order_btn">
+						<li><span><a href="#" class="re_order" id="re_order">Re-Order</a></span></li>
+					</ul>
+					
+					<ul class="right" id="reorder_save_btn" style="visibility: hidden;">
+						<li><span><a href="#" class="accept" id="re_order_save">Save Order</a></span></li>
+						<li><span><a href="menu_editor/{$cur_menu.ID}" class="cancel">Cancel</a></span></li>
+					</ul>
+					
+					{/if}
+							
+				</div>
+				
+				{$result}
+				
+				<div id="left_column">
+				
+					<h2>Galleries</h2>
+					
+					<ul>
+					
+{foreach from=$galleries key=galleryID item=gallery}
+					
+						<li id="gallery_{$galleryID}">
+							<a href="photo_galleries/{$gallery.ID}" class="gallery"{if $cur_gallery.ID == $gallery.ID} style="font-weight: bold;"{/if}>{$gallery.Name}</a>
+							<ul class="lil_buttons">
+								<li><a href="#" class="delete" rel="{$gallery.ID}" title="Delete '{$gallery.Name}'"></a></li>
+								<li><a href="#" class="edit" rel="{$gallery.ID}" title="Edit '{$gallery.Name}'"></a></li>
+							</ul>
+						</li>
+						
+{/foreach}
+					
+					</ul>
+				
+				</div>
+				
+				<div id="photo_gallery_images">
+
+
+{if $num_images > 0 && $cur_gallery != ''}				
+				
+					<table class="list" id="photo_gal_list">
+					
+						<thead>
+						
+						<tr>
+							<th style="width: 15px;" class="handle_th">&nbsp;</th>
+							<th style="width: 50px;">&nbsp;</th>
+							<th>Image</th>
+							<th style="width: 320px;">Caption</th>
+							<th style="width: 105px;"></th>
+						</tr>
+						
+						</thead>
+						
+						<tbody>
+
+{foreach from=$images key=imageID item=image}
+						
+						<tr id="tr_{$image.ID}">
+							<td class="handle">&nbsp;</td>
+							<td style="border: none;"><img src="{$ROOT}inc/img.php?dimension=c50{$image.folder_var}&amp;image={$image.name}" alt="" /></td>
+							<td>{$image.short_name} &nbsp;</td>
+							<td style="border: none;" class="caption">
+							 {$image.Caption} &nbsp;			
+							</td>
+							<td style="border: none;">
+								<ul class="lil_buttons">
+									<li><a href="#" class="edit" rel="{$image.ID}" title="Edit '{$image.name}'"></a></li>
+									<li><a href="#" class="delete"  rel="{$image.ID}" title="Remove '{$image.name}' from {$cur_gallery.Name}"></a></li>
+									<li><a href="{$image.img_url}" class="zoom" id="vb_{$image.ID}" rel="{$image.dimension_str}" title="View '{$image.name}'"></a></li>
+								</ul>
+							</td>
+						</tr>
+
+{/foreach}		
+
+					</tbody>
+					
+					</table>	
+				
+{elseif $cur_gallery.ID == 0}
+
+
+					<p style="text-align: center; margin-top: 100px;">
+						<img src="images/icons/arrow_left.png" alt="" /><br />
+						Select a gallery to the left
+					</p>
+					
+{elseif $num_images == 0}
+					
+					<p style="text-align: center; margin-top: 100px;">
+						<img src="images/icons/box.png" alt="" /><br />
+						No images found in <strong>{$cur_gallery}</strong>.
+					</p>
+					
+{/if}
+
+					
+				</div>
+						
+
+				<form id="save_order" action="photo_galleries/{$cur_gallery.ID}" method="post">
+						
+				<div class="buttons_bar">
+					<div class="loader"></div>					
+					<ul class="left" id="new_gallery_btn">
+						<li><span><a href="#" class="new" id="new_gallery">New Gallery</a></span></li>
+					</ul>						
+
+					{if $cur_gallery.ID != 0}
+					<ul class="right" id="add_images_btn">
+						<li><span><a href="#" class="new" id="add_images">Add Images</a></span></li>
+					</ul>				
+					{/if}
+					
+					<input type="hidden" name="action" value="save_order" />
+					<input type="hidden" name="photo_gal" value="{$cur_gallery.ID}" />
+					<input type="hidden" name="new_order" id="new_order" value="" />
+					
+				</div>
+				
+				</form>
+				
+				<script type="text/javascript">
+				
+					var root_url = '{$ROOT|substr:0:-1}';
+					var cur_gallery = '{$cur_gallery.ID}';
+									
+{literal}
+				
+					
+					$$('li.img .lil_buttons').each(function(lb) {
+						$(lb).fade('hide');					
+					});
+					
+					$$('li.img').each(function(li) {
+						
+						$(li).addEvent('mouseover',function() {										
+							var ul = '#' + $(li).get('id');							
+							$$(ul + ' ul').fade('in');
+							$$(ul + ' p').fade('out');					
+						});				
+						
+						$(li).addEvent('mouseout',function() {										
+							var ul = '#' + $(li).get('id');							
+							$$(ul + ' ul').fade('out');		
+							$$(ul + ' p').fade('in');							
+						});		
+										
+					});
+					
+					
+					$$('#left_column .lil_buttons').each(function(lc) {
+						$(lc).fade('hide');					
+					});
+					
+					$$('#left_column li').each(function(lci) {
+						
+						$(lci).addEvent('mouseover',function() {										
+							var ul = '#' + $(lci).get('id');							
+							$$(ul + ' ul').fade('show');				
+						});				
+						
+						$(lci).addEvent('mouseout',function() {										
+							var ul = '#' + $(lci).get('id');							
+							$$(ul + ' ul').fade('hide');					
+						});		
+										
+					});
+				
+					
+					
+				$$('#photo_gal_list .edit').each(function(eb) {
+					
+						$(eb).addEvent('click',function(e) {
+							new Event(e).stop();
+							var image = $(eb).get('rel');
+							
+							MochaUI.editImage = function(){	
+								new MochaUI.Window({
+									id: 'editImage',
+									title: 'Edit Image',
+									loadMethod: 'xhr',
+									contentURL: 'inc/edit_photo_gal_image.php?image=' + image,
+									width: 300,
+									height: 400,
+									toolbar2: true,
+									type: 'modal',
+									onContentLoaded: function() {
+										reset_toolbar2('editImage');
+										toolbar2_button(['ok','Save','#',function(e){ new Event(e).stop(); $('edit_image_post').submit(); }],'editImage');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('editImage').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'editImage');
+									}
+								});
+							}
+							
+							MochaUI.editImage();
+							
+						});
+						
+					});
+					
+					
+						
+				$$('#photo_gal_list .zoom').each(function(vb) {
+					
+						$(vb).addEvent('click',function(e) {
+							new Event(e).stop();
+							//var image_name = $(vb).get('rel');
+							var image_URL = $(vb).get('href');
+							
+							var image_dimensions = $(vb).get('rel').split('x');
+							var img_width = parseInt(image_dimensions[0]);
+							var img_height = parseInt(image_dimensions[1]);
+							
+							//alert(img_width + ' ' + img_height);
+							
+							MochaUI.viewImageWindow = function(){
+								new MochaUI.Window({
+									id: 'viewImage',
+									title: 'View Image',
+									loadMethod: 'iframe',
+									contentURL: image_URL,
+									toolbar2: false,
+									width: img_width,
+									height: img_height,
+									type: 'modal',
+									closable: true,
+									toolbar2: true,
+									onContentLoaded: function() {
+										reset_toolbar2('viewImage');
+										toolbar2_button(['ok','Close','#',function(e){ new Event(e).stop(); $('viewImage').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'viewImage');
+									}
+								});
+							}
+							
+							MochaUI.viewImageWindow();
+							
+						});
+						
+				});
+				
+				
+				
+				$$('#photo_gal_list .delete').each(function(db) {
+					
+						$(db).addEvent('click',function(e) {
+							new Event(e).stop();
+							var image = $(db).get('rel');
+							
+							MochaUI.removeImage = function(){	
+								new MochaUI.Window({
+									id: 'removeImage',
+									title: 'Remove Image',
+									loadMethod: 'xhr',
+									contentURL: 'inc/remove_image.php?image=' + image,
+									width: 300,
+									height: 60,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('removeImage');
+										toolbar2_button(['ok','Delete','#',function(e){ new Event(e).stop(); $('remove_image_post').submit(); }],'removeImage');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('removeImage').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'removeImage');
+									}
+								});
+							}
+							
+							MochaUI.removeImage();
+							
+						});
+						
+					});
+					
+					
+					
+					
+					$$('#left_column .delete').each(function(dgb) {
+					
+						$(dgb).addEvent('click',function(e) {
+							new Event(e).stop();
+							var gallery_ID = $(dgb).get('rel');
+							
+							MochaUI.deleteGallery = function(){	
+								new MochaUI.Window({
+									id: 'deleteGallery',
+									title: 'Delete Gallery',
+									loadMethod: 'xhr',
+									contentURL: 'inc/delete_gallery.php?gallery_ID=' + gallery_ID,
+									width: 300,
+									height: 60,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('deleteGallery');
+										toolbar2_button(['ok','Delete','photo_galleries/delete/' + gallery_ID,''],'deleteGallery');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('deleteGallery').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'deleteGallery');
+									}
+								});
+							}
+							
+							MochaUI.deleteGallery();
+							
+						});
+						
+					});
+					
+					
+					$$('#left_column .edit').each(function(egb) {
+					
+						$(egb).addEvent('click',function(e) {
+							new Event(e).stop();
+							var gallery_ID = $(egb).get('rel');
+							
+							MochaUI.editGallery = function(){	
+								new MochaUI.Window({
+									id: 'editGallery',
+									title: 'Edit Gallery',
+									loadMethod: 'xhr',
+									contentURL: 'inc/edit_gallery.php?gallery_ID=' + gallery_ID,
+									width: 300,
+									height: 120,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('editGallery');
+										toolbar2_button(['ok','Save','#',function(e){ new Event(e).stop(); $('edit_gallery_post').submit(); }],'editGallery');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('editGallery').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'editGallery');
+									}
+								});
+							}
+							
+							MochaUI.editGallery();
+							
+						});
+						
+					});
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+			$$('#photo_gal_list tbody tr td.handle').each(function(handle) {			
+				$(handle).setStyle('display','none');			
+			});
+			
+			$$('#photo_gal_list thead tr th.handle_th').setStyle('display','none');
+			
+			
+			if($chk($('re_order'))) {
+			
+			$('re_order').addEvent('click',function(e) {
+				
+				new Event(e).stop();
+				
+				$$('#photo_gal_list tbody tr td.handle').each(function(handle) {			
+					$(handle).setStyle('display','');			
+				});
+				
+				$$('#photo_gal_list thead tr th.handle_th').setStyle('display','');
+				
+				$('new_gallery_btn').fade('hide');												 
+				$('add_images_btn').fade('hide');															 
+				$('re_order_btn').fade('hide');
+				$('reorder_save_btn').fade('show'); 
+				
+				var sortItems = new Sortables('#photo_gal_list tbody', {
+					opacity: 0.6,
+					handle: '.handle',
+					onStart: function(el)
+						{
+							el.setStyle('color','red');
+						},
+					onComplete: function(el)
+						{
+							order = '';
+							var cnt = 0;
+							var serial = sortItems.serialize();
+							
+							$each(serial, function() {
+							
+								var menu_item = serial[cnt];
+								var item_class = $(menu_item).get('id').replace(/tr_/,'');
+						
+								order = order + item_class + ':' + cnt + ',';
+								
+								cnt++;
+						
+							});
+						
+							el.setStyle('color','green');
+							$('new_order').value = order;
+							alert(order);
+						}						
+					
+					});
+					
+			});
+			
+			
+			$('re_order_save').addEvent('click',function(e){
+				new Event(e).stop();
+				$('save_order').submit();
+			});
+			
+			}
+			
+			
+			
+			if($chk($('add_images')))
+				{
+				$('add_images').addEvent('click',function(e) {
+					new Event(e).stop();
+					
+					MochaUI.addImages = function(){	
+						new MochaUI.Window({
+							id: 'addImages',
+							title: 'Select Images',
+							loadMethod: 'xhr',
+							contentURL: 'inc/select_images.php?gallery=' + cur_gallery,
+							width: 400,
+							height: 500,
+							toolbar2: true,
+							type: 'modal',
+							onContentLoaded: function(windowEl) {
+								reset_toolbar2('addImages');
+								toolbar2_button(['ok','Add Images','#',function(e){ new Event(e).stop(); $('select_images_post').submit(); }],'addImages');
+								toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('addImages').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'addImages');
+
+							}
+							
+						});
+					}
+					
+					MochaUI.addImages();
+					
+				});
+			}
+			
+			
+			
+			$($('new_gallery')).addEvent('click',function(e) {
+				new Event(e).stop();
+				
+				MochaUI.newGallery = function(){	
+					new MochaUI.Window({
+						id: 'newGallery',
+						title: 'New Gallery',
+						loadMethod: 'xhr',
+						contentURL: 'inc/new_gallery.php',
+						width: 300,
+						height: 120,
+						toolbar2: true,
+						type: 'modal',
+						closable: true,
+						onContentLoaded: function() {
+							reset_toolbar2('newGallery');
+							toolbar2_button(['ok','Create','#',function(e){ new Event(e).stop(); $('new_gallery_post').submit(); }],'newGallery');
+							toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('newGallery').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'newGallery');
+						}
+					});
+				}
+				
+				MochaUI.newGallery();
+				
+			});
+				
+
+					
+					
+{/literal}
+				
+				</script>
+				
+				
+				
+				
+						

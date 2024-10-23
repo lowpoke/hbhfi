@@ -1,0 +1,16 @@
+
+<div id="popup_div" class="edit_news">
+
+	<form id="edit_category_post" action="news_categories" method="post">
+	
+		<p>
+			Category name:
+			<input type="hidden" name="action" value="edit_category" />
+			<input type="hidden" name="category_id" value="{$category.ID}" />
+		</p>		
+		<p><input type="text" name="category_name" id="category_name" class="medium_textbox" value="{$category.Name}" style="width: 170px;" /></p>
+			
+	</form>
+
+
+</div>

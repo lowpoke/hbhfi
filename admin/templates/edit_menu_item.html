@@ -1,0 +1,136 @@
+<div id="page-info-panel">
+
+<div id="page_info_top">
+	<h1 class="page_info">{$item.Name}</h1>
+</div>
+
+<form id="edit_menu_item_post" action="menu_editor/{$cur_menu}" method="post">
+
+<table>
+
+<tr>
+<th>Name</th>
+</tr>
+<tr>
+<td>
+<input type="text" name="link_name" id="link_name" class="small_textbox" value="{$item.Name}" style="width: 100%;" />
+<p>&nbsp;</p>
+</td>
+</tr>
+
+<tr>
+<th>Type</th>
+</tr>
+<tr>
+<td>
+
+<input type="radio" name="link_type" id="link_type_int" class="link_type" value="Internal"{if $item.Type == 'Internal'} checked="checked"{/if} /> Internal &nbsp; &nbsp;
+<input type="radio" name="link_type" id="link_type_ext" class="link_type" value="External"{if $item.Type == 'External'} checked="checked"{/if} /> External/Custom
+
+<p>&nbsp;</p>
+
+</td>
+</tr>
+
+<tr>
+<th>Destination</th>
+</tr>
+<tr>
+<td>
+
+<div id="dest_internal"{if $item.Type == 'External'} style="display: none;"{/if}>
+
+<p>Select a page to link to:</p>
+<select name="link_dest_int" class="small_textbox">
+	<option value="0">Select...</option>
+{foreach from=$pages key=pageID item=page}
+
+	<option value="{$page.ID}"{if $item.Destination == $page.ID} selected="selected"{/if}>{$page.Name}</option>
+
+{/foreach}
+</select>
+
+</div>
+
+<div id="dest_external"{if $item.Type == 'Internal'} style="display: none;"{/if}>
+<p>Enter a URL to link to:</p>
+<input type="text" name="link_dest_ext" class="small_textbox" value="{if $item.Type == 'Internal'}http://{else}{$item.Destination}{/if}" />
+</div>
+
+<p>&nbsp;</p>
+
+</td>
+</tr>
+
+{if $item.Level == 2}
+
+<tr>
+<th>Parent</th>
+</tr>
+<tr>
+<td>
+<select name="link_parent" class="small_textbox">
+	<option value="0">Select...</option>
+{foreach from=$menu_items key=menu_itemID item=menu_item}
+
+	<option value="{$menu_item.ID}"{if $item.Parent == $menu_item.ID} selected="selected"{/if}>{$menu_item.Name}</option>
+
+{/foreach}
+</select>
+
+<p>&nbsp;</p>
+</td>
+</tr>
+
+{/if}
+
+<tr>
+<th>Link Target</th>
+</tr>
+<tr>
+<td>
+
+<input type="radio" name="link_target" value="1"{if $item.Target == 1} checked="checked"{/if} /> Same Window <br />
+<input type="radio" name="link_target" value="2"{if $item.Target == 2} checked="checked"{/if} /> New Window/Popup
+
+<p>&nbsp;</p>
+
+</td>
+</tr>
+
+</table>
+
+<input type="hidden" name="item_ID" value="{$item.ID}" />
+<input type="hidden" name="action" value="edit_menu_item" />
+
+</form>
+
+</div>
+
+<script type="text/javascript">
+{literal}
+
+	$$('.link_type').each(function(lt) {
+	
+		$(lt).addEvent('click',function() {
+		
+			var link_type = $($(lt).get('id')).value;
+			
+			if(link_type == 'Internal')
+				{
+					$('dest_external').setStyle('display','none');
+					$('dest_internal').setStyle('display','');
+				}
+			else if(link_type == 'External')
+				{
+					$('dest_external').setStyle('display','');
+					$('dest_internal').setStyle('display','none');
+				}
+		
+		});
+	
+	});
+
+{/literal}
+</script>
+

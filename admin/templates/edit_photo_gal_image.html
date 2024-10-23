@@ -1,0 +1,30 @@
+<div id="page-info-panel">
+
+<div id="page_info_top">
+	<h1 class="page_info">{$image.Image}</h1>
+</div>
+
+<form id="edit_image_post" action="photo_galleries/{$cur_gallery}" method="post">
+
+<table>
+
+<tr>
+<th>Caption</th>
+</tr>
+<tr>
+<td>
+<textarea name="caption" id="caption" class="small_textbox" cols="50" rows="10" style="width: 100%;">{$image.Caption}</textarea>
+<p>&nbsp;</p>
+</td>
+</tr>
+
+</table>
+
+<input type="hidden" name="image_ID" value="{$image.ID}" />
+<input type="hidden" name="image_name" value="{$image.Image}" />
+<input type="hidden" name="photo_gal" value="{$cur_gallery}" />
+<input type="hidden" name="action" value="edit_image" />
+
+</form>
+
+</div>

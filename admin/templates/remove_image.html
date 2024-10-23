@@ -1,0 +1,17 @@
+
+<div id="popup_div" class="delete_warning">
+
+	<form id="remove_image_post" action="photo_galleries/{$cur_gallery.ID}" method="post">
+	
+		<p>
+			Are you sure you want to remove <strong>{$image.Image}</strong> from <strong>{$cur_gallery.Name}</strong>?
+			<input type="hidden" name="action" value="remove" />
+			<input type="hidden" name="photo_gal" value="{$cur_gallery.ID}" />
+			<input type="hidden" name="image_ID" value="{$image.ID}" />
+			<input type="hidden" name="image_name" value="{$image.Image}" />
+			<input type="hidden" name="gallery_name" value="{$cur_gallery.Name}" />
+		</p>
+			
+	</form>
+	
+</div>

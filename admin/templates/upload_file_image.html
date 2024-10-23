@@ -1,0 +1,18 @@
+
+<div id="popup_div" class="upload_file">
+
+	<form id="upload_form" action="{$post_url}" enctype="multipart/form-data" method="post">
+	
+		<p>Click "Browse" to select a file to upload.</p>		
+		<p><input type="file" name="upload" /></p>
+		<p>
+			<input type="hidden" name="action" value="upload" />
+			<input type="hidden" name="check" value="y" />
+			<input type="hidden" name="file_destination" value="{$file_destination}" />
+			<input type="checkbox" name="replace" value="y" checked="checked" /> Replace Existing
+		</p>
+			
+	</form>
+
+
+</div>

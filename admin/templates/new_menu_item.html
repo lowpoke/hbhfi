@@ -1,0 +1,137 @@
+<div id="page-info-panel">
+
+<div id="page_info_top">
+	<h1 class="page_info">New Menu Item</h1>
+</div>
+
+<form id="new_menu_item_post" action="menu_editor/{$cur_menu}" method="post">
+
+<table>
+
+<tr>
+<th>Name</th>
+</tr>
+<tr>
+<td>
+<input type="text" name="link_name" id="link_name" class="small_textbox" value="" />
+<p>&nbsp;</p>
+</td>
+</tr>
+
+<tr>
+<th>Type</th>
+</tr>
+<tr>
+<td>
+
+<input type="radio" name="link_type" id="link_type_int" class="link_type" value="Internal" checked="checked" /> Internal &nbsp; &nbsp;
+<input type="radio" name="link_type" id="link_type_ext" class="link_type" value="External" /> External/Custom
+
+<p>&nbsp;</p>
+
+</td>
+</tr>
+
+<tr>
+<th>Destination</th>
+</tr>
+<tr>
+<td>
+
+<div id="dest_internal">
+
+<p>Select a page to link to:</p>
+<select name="link_dest_int" class="small_textbox">
+	<option value="0">Select...</option>
+{foreach from=$pages key=pageID item=page}
+
+	<option value="{$page.ID}">{$page.Name}</option>
+
+{/foreach}
+</select>
+
+</div>
+
+<div id="dest_external" style="display: none;">
+<p>Enter a URL to link to:</p>
+<input type="text" name="link_dest_ext" class="small_textbox" value="http://" />
+</div>
+
+<p>&nbsp;</p>
+
+</td>
+</tr>
+
+{if $level == 2}
+
+<tr>
+<th>Parent</th>
+</tr>
+<tr>
+<td>
+<select name="link_parent" class="small_textbox">
+	<option value="0">Select...</option>
+{foreach from=$menu_items key=menu_itemID item=menu_item}
+
+	<option value="{$menu_item.ID}"{if $parent == $menu_item.ID} selected="selected"{/if}>{$menu_item.Name}</option>
+
+{/foreach}
+</select>
+
+<p>&nbsp;</p>
+</td>
+</tr>
+
+{/if}
+
+<tr>
+<th>Link Target</th>
+</tr>
+<tr>
+<td>
+
+<input type="radio" name="link_target" value="1" checked="checked" /> Same Window <br />
+<input type="radio" name="link_target" value="2" /> New Window/Popup
+
+<p>&nbsp;</p>
+
+</td>
+</tr>
+
+</table>
+
+<input type="hidden" name="action" value="new_menu_item" />
+<input type="hidden" name="link_level" value="{$level}" />
+<input type="hidden" name="link_menu" value="{$cur_menu}" />
+
+</form>
+
+</div>
+
+<script type="text/javascript">
+{literal}
+
+	$$('.link_type').each(function(lt) {
+	
+		$(lt).addEvent('click',function() {
+		
+			var link_type = $($(lt).get('id')).value;
+			
+			if(link_type == 'Internal')
+				{
+					$('dest_external').setStyle('display','none');
+					$('dest_internal').setStyle('display','');
+				}
+			else if(link_type == 'External')
+				{
+					$('dest_external').setStyle('display','');
+					$('dest_internal').setStyle('display','none');
+				}
+		
+		});
+	
+	});
+
+{/literal}
+</script>
+

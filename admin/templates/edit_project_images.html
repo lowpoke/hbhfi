@@ -1,0 +1,103 @@
+				<div id="tab_bar">
+					<h1>Edit Project</h1>
+					<ul>
+						<li><a href="edit_project/{$project.project_id}">Project</a></li>
+						<li class="selected"><a href="edit_project_images/{$project.project_id}">Images</a></li>
+					</ul>
+				</div>
+				
+				<div id="main">
+
+						<form id="edit_page" action="edit_project_images/{$project.project_id}" method="post">
+							<input type="hidden" name="action" value="edit_project" />
+							<input type="hidden" name="project_ID" value="{$project.project_id}" />
+							
+							<div id="page_details">
+															
+								<h3>Project Images</h3>
+								
+								<table class="images_list">
+								
+									<tr>
+										<th style="width: 100px;">Image</th>
+										<th>Filename</th>
+										<th>Options</th>
+									</tr>
+
+									<tr>
+										<td style="height: 110px;"><img src="../inc/img.php?dimension=c100&amp;folder=projects/{$project.project_id}&amp;image={$thumbnail.image_filename}" alt="" /></td>
+										<td><strong>Thumbnail:</strong> {$thumbnail.image_filename}</td>
+										<td style="text-align: right; border-right: none;">&nbsp;</td>
+									</tr>
+								
+{foreach from=$full_images key=fullID item=image}
+
+									<tr>
+										<td style="height: 110px;"><img src="../inc/img.php?dimension=c100&amp;folder=projects/{$project.project_id}&amp;image={$image.image_filename}" alt="" /></td>
+										<td>{$image.image_filename}</td>
+										<td style="text-align: right; border-right: none;">{$image.original_link}</td>
+									</tr>
+
+{/foreach}
+	
+								</table>
+																							
+							</div>
+							
+						</form>
+						
+						
+				</div>
+						
+						
+				<div class="buttons_bar">
+					<div class="loader"></div>
+					<ul class="right">
+						<li><span><a href="#" class="accept submit" id="save_page">Save</a></span></li>
+						<li><span><a href="projects" class="cancel">Cancel</a></span></li>
+					</ul>				
+				</div>
+				
+				<script type="text/javascript">
+				
+					var root_url = '{$ROOT|substr:0:-1}';
+				
+{literal}
+				
+									
+					
+					$('save_page').addEvent('click',function(e) {
+						
+						new Event(e).stop();
+						$$('.loader').each(function(loader) {
+						
+							$(loader).fade('in');
+														
+							$('edit_page').submit();
+						
+						});
+					
+					});
+									
+					
+					$$('.text_field').each(function(tf) {
+					
+						$(tf).addEvent('focus',function() {
+							$(tf).addClass('focus');
+						});
+						
+						$(tf).addEvent('blur',function() {
+							$(tf).removeClass('focus');
+						});
+					
+					});
+					
+					
+{/literal}
+				
+				</script>
+				
+				
+				
+				
+						

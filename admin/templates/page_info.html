@@ -1,0 +1,43 @@
+<div id="page-info-panel">
+
+<div id="page_info_top">
+	<h1 class="page_info">{$page.Name}</h1>
+</div>
+
+<table>
+
+{if $page.Section != 0}
+
+<tr>
+<th>Section</th>
+</tr>
+<tr>
+<td>{$page.Section}</td>
+</tr>
+
+{/if}
+
+<tr>
+<th>Title</th>
+</tr>
+<tr>
+<td>{$page.Title}</td>
+</tr>
+
+<tr>
+<th>URL</th>
+</tr>
+<tr>
+<td><abbr title="{$ROOT}{$page.viewURL}">{$page.URL}</abbr></td>
+</tr>
+
+<tr>
+<th>Created</th>
+</tr>
+<tr>
+<td>{$page.Created}<em> by <strong>{$page.Created_By}</strong></em></td>
+</tr>
+
+</table>
+
+</div>

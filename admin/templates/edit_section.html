@@ -1,0 +1,114 @@
+				<div id="tab_bar">
+					<h1>Edit Section</h1>
+				</div>
+				
+				<div id="main">
+
+						<form id="edit_section" action="content/sections" method="post">
+							<input type="hidden" name="action" value="edit_section" />
+							<input type="hidden" name="section_ID" value="{$section.ID}" />
+							
+								<h3>Section Name</h3>
+								<p>Enter a name for this section.</p>
+								<p>
+									<input type="text" name="section_name" id="section_name" class="text_field medium_textbox" value="{$section.Name}" />
+								</p>
+								
+								<h3>Default Page</h3>
+								<p>Enter a name for this section.</p>
+								<p>
+									<select name="default_page" id="default_page" class="text_field medium_textbox">
+										<option value="0">None</option>
+{foreach from=$pages key=pageID item=page}
+										<option value="{$page.ID}"{if $section.Default_Page == $page.ID} selected="selected"{/if}>{$page.Name}</option>
+{/foreach}				
+									</select>
+								</p>
+								
+								<h3>Section URL</h3>
+								
+								<p>Enter a URL for this section.  The URL is used to access this section from the web browser. Acceptable characters include A-Z, a-z, 0-9, underscores and spaces.</p>
+								<p>
+									<input type="text" name="section_url" id="section_url" class="text_field medium_textbox" value="{$section.URL}" />
+									<input type="hidden" name="encoded_url" id="encoded_url" value="{$section.URL}" />
+								</p>
+								<p><em><strong>Sample URL: </strong><span id="sample_url">{$ROOT|substr:0:-1}{$section.URL}</span></em></p>
+
+							
+						</form>
+						
+						
+				</div>
+						
+						
+				<div class="buttons_bar">
+					<div class="loader"></div>
+					<ul class="right">
+						<li><span><a href="#" class="accept submit" id="save_section">Save</a></span></li>
+						<li><span><a href="content/sections" class="cancel">Cancel</a></span></li>
+					</ul>				
+				</div>
+				
+				<script type="text/javascript">
+				
+					var root_url = '{$ROOT|substr:0:-1}';
+				
+{literal}
+
+
+					$('save_section').addEvent('click',function(e) {
+						
+						new Event(e).stop();
+						$$('.loader').each(function(loader) {
+						
+							$(loader).fade('in');
+														
+							$('edit_section').submit();
+						
+						});
+					
+					});
+					
+					var section_url = $('section_url');
+					var sample_url = $('sample_url');
+					
+					section_url.addEvent('keyup',function() {
+					
+						var sample = section_url.value;
+						
+						sample = sample.replace(/ /g,'_');
+						sample = encodeURI(sample);
+						sample = escape(sample);
+						
+						if(sample.substr(1,1) != '/')
+							{
+								sample = '/' + sample;
+							}
+												
+						sample_url.set('text',root_url + sample);
+						$('encoded_url').value = sample;
+					
+					});
+					
+					
+					$$('.text_field').each(function(tf) {
+					
+						$(tf).addEvent('focus',function() {
+							$(tf).addClass('focus');
+						});
+						
+						$(tf).addEvent('blur',function() {
+							$(tf).removeClass('focus');
+						});
+					
+					});
+					
+					
+{/literal}
+				
+				</script>
+				
+				
+				
+				
+						

@@ -1,0 +1,399 @@
+				<div id="tab_bar">
+					<h1>Menu Editor</h1>
+				</div>
+				
+				<div class="buttons_bar">		
+				
+					{if $num_items > 0}<p>{$num_items} images in <strong>{$cur_menu.Name}</strong></p>{/if}
+					<ul class="right" id="re_order_btn">
+						<li><span><a href="#" class="re_order" id="re_order">Re-Order</a></span></li>
+					</ul>
+					
+					<ul class="right" id="reorder_save_btn" style="visibility: hidden;">
+						<li><span><a href="#" class="accept" id="re_order_save">Save Order</a></span></li>
+						<li><span><a href="menu_editor/{$cur_menu.ID}" class="cancel">Cancel</a></span></li>
+					</ul>
+					
+				</div>
+				
+				{$result}
+				
+				<div id="left_column">
+				
+					<h2>Menus</h2>
+					
+					<ul>
+					
+{foreach from=$menus key=menuID item=menu}
+					
+						<li id="menu_{$menu.ID}">
+							<a href="menu_editor/{$menu.ID}" class="menu"{if $cur_menu.ID == $menu.ID} style="font-weight: bold;"{/if}>{$menu.Name}</a>
+						</li>
+						
+{/foreach}
+					
+					</ul>
+				
+				</div>
+				
+				<div id="right_column">
+				
+{if $show_items}
+
+	{if $num_items > 0}
+
+					<table class="list" id="menu_item_list">
+					
+						<thead>
+						
+						<tr>
+							<th class="handle_th"></th>
+							<th style="width: 250px;">Item</th>
+							<th style="width: 250px;">Destination</th>
+							<th></th>
+						</tr>
+						
+						</thead>
+					
+						<tbody>
+
+		{foreach from=$menu_items key=itemID item=menu_item}
+
+						
+						<tr id="tr_{$itemID}" class="{$menu_item.item.Level}:{$menu_item.item.ID}">
+							<td class="handle">&nbsp;</td>
+							<td><strong>{$menu_item.item.Name}</strong> &nbsp;</td>
+							<td>{$menu_item.item.Destination} &nbsp;</td>
+							<td style="border: none;">
+								<ul class="lil_buttons">
+									<li><a href="#" class="add" id="ab_{$menu_item.item.ID}" rel="{$menu_item.item.ID}" title="Add child to '{$menu_item.item.Name}'"></a></li>
+									<li><a href="#" class="info" id="ib_{$menu_item.item.ID}" rel="{$menu_item.item.ID}"></a></li>
+									<li><a href="#" class="edit" id="eb_{$menu_item.item.ID}" rel="{$menu_item.item.ID}" title="Edit '{$menu_item.item.Name}'"></a></li>
+									<li><a href="#" class="delete" id="db_{$menu_item.item.ID}" rel="{$menu_item.item.Name}" title="Delete '{$menu_item.item.Name}'"></a></li>
+								</ul>
+							</td>
+						</tr>
+						
+			{if $menu_item.num_sub > 0}
+ 
+				{foreach from=$menu_item.sub_items key=subID item=sub_item} 
+ 
+							<tr id="tr_{$itemID}_{$subID}" class="{$sub_item.Level}:{$sub_item.ID}">
+								<td class="handle">&nbsp;</td>
+								<td> &nbsp; &nbsp; - &nbsp; {$sub_item.Name} &nbsp;</td>
+								<td>{$sub_item.Destination} &nbsp;</td>
+								<td style="border: none;">
+									<ul class="lil_buttons">
+										<li><a href="#" class="info" id="ib_{$sub_item.ID}" rel="{$sub_item.ID}"></a></li>
+										<li><a href="#" class="edit" id="eb_{$sub_item.ID}" rel="{$sub_item.ID}" title="Edit '{$sub_item.Name}'"></a></li>
+										<li><a href="#" class="delete" id="db_{$sub_item.ID}" rel="{$sub_item.Name}" title="Delete '{$sub_item.Name}'"></a></li>
+									</ul>
+								</td>
+							</tr> 
+ 
+				{/foreach}
+ 
+			{/if}
+	
+		{/foreach}
+		
+					</tbody>
+					
+					</table>		
+
+
+					
+	{else}
+
+	
+					
+					<p style="text-align: center; margin-top: 100px;">
+						<img src="images/icons/box.png" alt="" /><br />
+						No items in <strong>{$cur_menu}</strong>.
+					</p>
+					
+	{/if}
+	
+{else}
+					
+					<p style="text-align: center; margin-top: 100px;">
+						<img src="images/icons/arrow_left.png" alt="" /><br />
+						Select a menu to the left.
+					</p>
+					
+{/if}
+					
+					
+				</div>
+						
+						
+				<form id="save_order" action="menu_editor/{$cur_menu.ID}" method="post">
+				
+				<div class="buttons_bar">
+					<div class="loader"></div>					
+					<ul class="right" id="new_item_btn">
+						<li><span><a href="#" class="new" id="new_item">New Item</a></span></li>
+					</ul>				
+	
+					<input type="hidden" name="action" value="save_order" />
+					<input type="hidden" name="new_order" id="new_order" value="" />
+				
+				</div>
+				
+				</form>
+				
+				<script type="text/javascript">
+				
+					var root_url = '{$ROOT|substr:0:-1}';
+					var cur_menu = '{$cur_menu.ID}';
+				
+{literal}
+				
+						
+				$$('#menu_item_list .info').each(function(ib) {
+					
+						$(ib).addEvent('click',function(e) {
+							new Event(e).stop();
+							var item_id = $(ib).get('rel');
+							
+							MochaUI.itemInfo = function(){	
+								new MochaUI.Window({
+									id: 'itemInfo',
+									title: 'Menu Item',
+									loadMethod: 'xhr',
+									contentURL: 'inc/menu_item_info.php?item_ID=' + item_id,
+									width: 300,
+									height: 500,
+									toolbar2: true,
+									type: 'modal',
+									onContentLoaded: function() {
+										reset_toolbar2('itemInfo');
+										toolbar2_button(['ok','Close','#',function(e){ new Event(e).stop(); $('itemInfo').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'itemInfo');
+									}
+								});
+							}
+							
+							MochaUI.itemInfo();
+							
+						});
+						
+					});
+					
+					
+				$$('#menu_item_list .edit').each(function(ib) {
+					
+						$(ib).addEvent('click',function(e) {
+							new Event(e).stop();
+							var item_id = $(ib).get('rel');
+							
+							MochaUI.editItem = function(){	
+								new MochaUI.Window({
+									id: 'editItem',
+									title: 'Edit Menu Item',
+									loadMethod: 'xhr',
+									contentURL: 'inc/edit_menu_item.php?item_ID=' + item_id + '&cur_menu=' + cur_menu,
+									width: 300,
+									height: 500,
+									toolbar2: true,
+									type: 'modal',
+									onContentLoaded: function() {
+										reset_toolbar2('editItem');
+										toolbar2_button(['ok','Save','#',function(e){ new Event(e).stop(); $('edit_menu_item_post').submit(); }],'editItem');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('editItem').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'editItem');
+									}
+								});
+							}
+							
+							MochaUI.editItem();
+							
+						});
+						
+					});
+					
+				
+				$$('#menu_item_list .add').each(function(ab) {
+					
+						$(ab).addEvent('click',function(e) {
+							new Event(e).stop();
+							var item_parent = $(ab).get('rel');
+							
+							MochaUI.childItem = function(){	
+								new MochaUI.Window({
+									id: 'childItem',
+									title: 'New Menu Item',
+									loadMethod: 'xhr',
+									contentURL: 'inc/new_menu_item.php?level=2&parent=' + item_parent + '&cur_menu=' + cur_menu,
+									width: 300,
+									height: 500,
+									toolbar2: true,
+									type: 'modal',
+									onContentLoaded: function() {
+										reset_toolbar2('childItem');
+										toolbar2_button(['ok','Save','#',function(e){ new Event(e).stop(); $('new_menu_item_post').submit(); }],'childItem');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('childItem').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'childItem');
+									}
+								});
+							}
+							
+							MochaUI.childItem();
+							
+						});
+						
+					});
+					
+					
+				$('new_item').addEvent('click',function(e) {
+					new Event(e).stop();
+					
+					MochaUI.newItem = function(){	
+						new MochaUI.Window({
+							id: 'newItem',
+							title: 'New Menu Item',
+							loadMethod: 'xhr',
+							contentURL: 'inc/new_menu_item.php?level=1&cur_menu=' + cur_menu,
+							width: 300,
+							height: 500,
+							toolbar2: true,
+							type: 'modal',
+							onContentLoaded: function() {
+								reset_toolbar2('newItem');
+								toolbar2_button(['ok','Save','#',function(e){ new Event(e).stop(); $('new_menu_item_post').submit(); }],'newItem');
+								toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('newItem').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'newItem');
+							}
+						});
+					}
+					
+					MochaUI.newItem();
+					
+				});
+					
+			
+					
+
+
+
+					
+					
+					
+			$$('#menu_item_list tbody tr td.handle').each(function(handle) {			
+				$(handle).setStyle('display','none');			
+			});
+			
+			$$('#menu_item_list thead tr th.handle_th').setStyle('display','none');
+			
+			$('re_order').addEvent('click',function(e) {
+				
+				new Event(e).stop();
+				
+				$$('#menu_item_list tbody tr td.handle').each(function(handle) {			
+					$(handle).setStyle('display','');			
+				});
+				
+				$$('#menu_item_list thead tr th.handle_th').setStyle('display','');
+				
+				$('new_item_btn').fade('hide');
+												 
+				$('re_order_btn').fade('hide');
+				$('reorder_save_btn').fade('show'); 
+				
+				var sortItems = new Sortables('#menu_item_list tbody', {
+					opacity: 0.6,
+					handle: '.handle',
+					onStart: function(el)
+						{
+							el.setStyle('color','red');
+						},
+					onComplete: function(el)
+						{
+							order = '';
+							var cnt = 0;
+							var serial = sortItems.serialize();
+							//$each(serial, function() { order = order + serial[cnt].replace(/tr_/,'') + ':' + cnt + ','; cnt++; });
+							//console.log(serial)
+							
+							var cur_parent = '';
+							
+							$each(serial, function() {
+							
+								var menu_item = serial[cnt];
+								var item_class = $(menu_item).get('class');
+								var item_class = item_class.split(':');
+	
+								var item_info = [];							
+								item_info['Level'] = item_class[0];
+								item_info['ID'] = item_class[1];
+								
+								if(item_info['Level'] == 1)
+									{
+										cur_parent = item_info['ID'];
+									}
+									
+								var item_parent = (item_info['Level'] == 2) ? cur_parent : 0 ;
+								
+								//order = order + 'current parent: ' + cur_parent + '\r\n' + 'row ID: ' + menu_item + ', item ID: ' + item_info['ID'] + ', item Level: ' + item_info['Level'] + ', order: ' + cnt + ', parent: ' + item_parent + '\r\n' + '\r\n'; cnt++;
+							
+							
+								order = order + item_info['ID'] + ':' + item_info['Level'] + ':' + item_parent + ':' + cnt + ',';
+								
+								cnt++;
+						
+							});
+						
+							el.setStyle('color','green');
+							$('new_order').value = order;
+							//alert(order);
+						}						
+					
+					});
+					
+			});
+			
+			$('re_order_save').addEvent('click',function(e){
+				new Event(e).stop();
+				$('save_order').submit();
+			});
+			
+			
+			
+			$$('#menu_item_list .delete').each(function(db) {
+			
+				$(db).addEvent('click',function(e) {
+					new Event(e).stop();
+					var item_id = $(db).get('id').replace(/db_/,'');
+					
+					MochaUI.deleteItem = function(){	
+						new MochaUI.Window({
+							id: 'deleteItem',
+							title: 'Delete Menu Item',
+							loadMethod: 'xhr',
+							contentURL: 'inc/delete_menu_item.php?item_ID=' + item_id,
+							width: 300,
+							height: 60,
+							toolbar2: true,
+							type: 'modal',
+							closable: true,
+							onContentLoaded: function() {
+								reset_toolbar2('deleteItem');
+								toolbar2_button(['ok','Delete',('menu_editor/' + cur_menu + '/delete/' + item_id),''],'deleteItem');
+								toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('deleteItem').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'deleteItem');
+							}
+						});
+					}
+					
+					MochaUI.deleteItem();
+					
+				});
+				
+			});
+
+
+					
+					
+{/literal}
+				
+				</script>
+				
+				
+				
+				
+						

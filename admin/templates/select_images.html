@@ -1,0 +1,76 @@
+
+<div class="accordianWrapper">
+<div class="mochaAccordion">
+
+<form id="select_images_post" action="photo_galleries/{$cur_gallery}" method="post">
+
+<div id="select_images">
+
+{foreach from=$folders key=folderID item=folder}
+
+	<h3 class="accordianToggler topToggler">{$folderID}</h3>
+	<div class="accordianElement" style="margin: 0; padding: 0;">
+		<div class="accordianContent" style="margin: 0; padding: 0;">
+		
+					<table class="list">
+						
+						<tbody>
+
+{foreach key=imageID item=image from=$folder}
+						
+						<tr id="tr_{$imageID}">
+							<td class="checkbox"><input type="checkbox" name="images[]" class="check" value="{$image.folder}:{$image.name}" /></td>
+							<td class="thumb" style="border: none;"><img src="{$ROOT}inc/img.php?dimension=c50&amp;folder={$image.folder}&amp;image={$image.name}" alt="" /></td>
+							<td>{$image.name} &nbsp;</td>
+						</tr>
+
+{/foreach}		
+
+					</tbody>
+					
+					</table>	
+
+		</div>
+	</div>
+	
+{/foreach}
+
+<input type="hidden" name="action" value="add_images" />
+<input type="hidden" name="photo_gal" value="{$cur_gallery}" />
+
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+
+				<script type="text/javascript">
+
+				
+{literal}
+				
+					
+					$$('table tr').each(function(tr) {
+						
+						$(tr).addEvent('click',function(e) {
+						
+							if($(tr).getElement('.check').checked)
+								{
+									$(tr).getElement('.check').checked = false;
+								}
+							else
+								{
+									$(tr).getElement('.check').checked = true;
+								}
+						
+						});
+
+					});
+					
+{/literal}
+				
+				</script>

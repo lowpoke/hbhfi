@@ -1,0 +1,165 @@
+				<div id="tab_bar">
+					<h1>News &amp; Articles</h1>
+					<ul>
+						<li><a href="news_articles">Articles</a></li>
+						<li class="selected"><a href="news_categories">Categories</a></li>
+					</ul>
+				</div>
+				
+				<div class="buttons_bar">
+					
+					<p>{$num_categories}</p>
+					
+					<ul class="right">
+						<li><span><a href="#" class="new new_cat">New Category</a></span></li>
+					</ul>				
+				</div>
+				
+				
+				<div id="main">
+				
+					{$result}
+				
+					<table class="list" id="category_list">
+					
+						<tr>
+							<th>Category</th>
+							<th style="width: 200px;">Created</th>
+							<th style="width: 55px;"></th>
+						</tr>
+
+{foreach from=$categories key=categoryID item=category}
+						
+						<tr id="tr_{$category.ID}">
+							<td><strong>{$category.Name}</strong> &nbsp;</td>
+							<td style="border: none;">{$category.Created}<em> by <strong>{$category.Created_By}</strong></em> &nbsp;</td>
+							<td style="border: none;">
+								<ul class="lil_buttons">
+									<li><a href="#" class="edit" rel="{$category.ID}" title="Edit '{$category.Name}'"></a></li>
+									<li><a href="#" class="delete" id="db_{$category.ID}" rel="{$category.ID}" title="Delete '{$category.Name}'"></a></li>
+								</ul>
+							</td>
+						</tr>
+
+{/foreach}		
+					
+					</table>				
+				
+				
+				</div>
+				
+				<div class="buttons_bar">
+				
+					<ul class="right">
+						<li><span><a href="#" class="new new_cat">New Category</a></span></li>
+					</ul>			
+			
+				</div>
+				
+				
+				<script type="text/javascript">
+								
+{literal}
+				
+					
+					$$('#category_list .delete').each(function(db) {
+					
+						$(db).addEvent('click',function(e) {
+							new Event(e).stop();
+							var category_id = $(db).get('rel');
+							
+							MochaUI.deleteCategory = function(){	
+								new MochaUI.Window({
+									id: 'deleteCategory',
+									title: 'Delete News Category',
+									loadMethod: 'xhr',
+									contentURL: 'inc/delete_news_category.php?category_ID=' + category_id,
+									width: 300,
+									height: 60,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('deleteCategory');
+										toolbar2_button(['ok','Delete',('news_categories/delete_category/' + category_id),''],'deleteCategory');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('deleteCategory').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'deleteCategory');
+									}
+								});
+							}
+							
+							MochaUI.deleteCategory();
+							
+						});
+						
+					});
+					
+					
+					$$('.new_cat').each(function(nc) {
+					
+						$(nc).addEvent('click',function(e) {
+							new Event(e).stop();
+							
+							MochaUI.newCategory = function(){	
+								new MochaUI.Window({
+									id: 'newCategory',
+									title: 'New News Category',
+									loadMethod: 'xhr',
+									contentURL: 'inc/new_news_category.php',
+									width: 300,
+									height: 120,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('newCategory');
+										toolbar2_button(['ok','Create','#',function(e){ new Event(e).stop(); $('new_category_post').submit(); }],'newCategory');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('newCategory').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'newCategory');
+									}
+								});
+							}
+							
+							MochaUI.newCategory();
+							
+						});
+						
+					});
+					
+				
+				
+				$$('#category_list .edit').each(function(ec) {
+					
+						$(ec).addEvent('click',function(e) {
+							new Event(e).stop();
+							
+							var cat_id = $(ec).get('rel');
+							
+							MochaUI.editCategory = function(){	
+								new MochaUI.Window({
+									id: 'editCategory',
+									title: 'Edit News Category',
+									loadMethod: 'xhr',
+									contentURL: 'inc/edit_news_category.php?category_ID=' + cat_id,
+									width: 300,
+									height: 120,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('editCategory');
+										toolbar2_button(['ok','Save','#',function(e){ new Event(e).stop(); $('edit_category_post').submit(); }],'editCategory');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('editCategory').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'editCategory');
+									}
+								});
+							}
+							
+							MochaUI.editCategory();
+							
+						});
+						
+					});
+				
+{/literal}
+				
+				</script>
+				
+				

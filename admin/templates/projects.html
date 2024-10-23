@@ -1,0 +1,197 @@
+				<div id="tab_bar">
+					<h1>Projects</h1>
+					<ul>
+						<li class="selected"><a href="projects">Projects</a></li>
+					</ul>
+				</div>
+				
+				<div class="buttons_bar" style="position: relative;">
+					
+					<p>{$num_projects}</p>
+					
+					<div style="position: absolute; top: 10px; right: 10px; width: 70%; text-align: right;">
+						<strong>View By: </strong> &nbsp;
+						
+						<select onchange="{literal}if(this.value != 0) { window.location = '/admin/projects/builder/' + this.value }{/literal}">
+							<option value="0">Builder...</option>
+							{foreach from=$builder_list key=builderID item=builder}
+							<option value="{$builder.builder_id}"{if $view_by == $builder.builder_id} selected="selected"{/if}>{$builder.project_builder}</option>
+							{/foreach}
+						</select>
+					
+						<select onchange="{literal}if(this.value != 0) { window.location = '/admin/projects/category/' + this.value }{/literal}">
+							<option value="0">Category...</option>
+							{foreach from=$category_list key=categoryID item=category}
+							<option value="{$category.category_id}"{if $view_by == $category.category_id} selected="selected"{/if}>{$category.category_name}</option>
+							{/foreach}
+						</select>
+						
+						<select onchange="{literal}if(this.value != 0) { window.location = '/admin/projects/country/' + this.value }{/literal}">
+							<option value="0">Country...</option>
+							{foreach from=$country_list key=countryID item=country}
+							<option value="{$country.country|urlencode}"{if $view_by == $country.country} selected="selected"{/if}>{$country.country}</option>
+							{/foreach}
+						</select>
+						
+						<input type="button" value="Show All" onclick="window.location = '/admin/projects/all'" />
+					
+					</div>
+						
+				</div>
+				
+				
+				<div id="main">
+				
+					{$result}
+				
+					<table class="list" id="project_list">
+					
+						<thead>
+						
+						<tr>
+							<th style="overflow: hidden;">Project</th>
+							<th style="overflow: hidden;">Name</th>		
+							<th style="width: 80px;">Category</th>							
+							<th style="width: 120px;">Builder</th>							
+							<th style="width: 120px;">Country</th>						
+							<th style="width: 75px;">Comments</th>
+							<th style="width: 70px;">Created</th>
+							<th style="width: 105px;"></th>
+						</tr>
+						
+						</thead>
+						
+						<tbody>
+
+{if $num_projects > 0}
+
+{foreach from=$projects key=projectID item=project}
+						
+						<tr id="tr_{$project.project_id}">
+							<td><strong>{$project.project_item}</strong> &nbsp;</td>
+							<td>{$project.project_name} &nbsp;</td>
+							<td><a href="projects/category/{$project.category_id}">{$project.category_name}</a> &nbsp;</td>
+							<td><a href="projects/builder/{$project.builder_id}">{$project.project_builder}</a> &nbsp;</td>
+							<td><a href="projects/country/{$project.builder_country|urlencode}">{$project.builder_country}</a> &nbsp;</td>
+							<td><a href="comments/project/{$project.project_id}">{$project.project_comments} comment{$project.project_comments|plural}</a> &nbsp;</td>
+							<td style="border: none;">{$project.project_created} &nbsp;</td>
+							<td style="border: none;">
+								<ul class="lil_buttons">
+									<li><a href="edit_project/{$project.project_id}" class="edit" title="Edit '{$project.project_name}'"></a></li>
+									<li><a href="#" class="delete" id="db_{$project.project_id}" rel="{$project.project_name}" title="Delete '{$project.project_name}'"></a></li>
+									<li><a href="{$ROOT}project/{$project.project_id}" class="view" id="vb_{$project.project_id}" rel="{$project.project_name}" title="View '{$project.project_name}'"></a></li>
+								</ul>
+							</td>
+						</tr>
+
+{/foreach}
+
+{else}
+
+						<tr id="tr_{$project.project_id}">
+							<td colspan="7" style="text-align: center;"><strong>No projects found.</strong> &nbsp;</td>
+						</tr>
+
+{/if}	
+
+					</tbody>
+					
+					</table>				
+				
+				
+				</div>
+				
+				<form id="save_order" action="content/pages" method="post">
+				
+				<div class="buttons_bar">
+					
+									
+				</div>
+				
+				</form>
+				
+				
+				<script type="text/javascript">
+								
+{literal}
+				
+							
+					
+					
+					$$('#project_list .delete').each(function(db) {
+					
+						$(db).addEvent('click',function(e) {
+							new Event(e).stop();
+							var project_id = $(db).get('id').replace(/db_/,'');
+							
+							MochaUI.deletePage = function(){	
+								new MochaUI.Window({
+									id: 'deleteProject',
+									title: 'Delete Project',
+									loadMethod: 'xhr',
+									contentURL: 'inc/delete_project.php?project_ID=' + project_id,
+									width: 300,
+									height: 60,
+									toolbar2: true,
+									type: 'modal',
+									closable: true,
+									onContentLoaded: function() {
+										reset_toolbar2('deleteProject');
+										toolbar2_button(['ok','Delete',('content/projects/delete_project/' + project_id),''],'deleteProject');
+										toolbar2_button(['cancel','Cancel','#',function(e){ new Event(e).stop(); $('deleteProject').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'deleteProject');
+									}
+								});
+							}
+							
+							MochaUI.deletePage();
+							
+						});
+						
+					});
+					
+					
+					
+					
+					$$('#project_list .view').each(function(vb) {
+					
+						$(vb).addEvent('click',function(e) {
+							new Event(e).stop();
+							var page_name = $(vb).get('rel');
+							var page_id = $(vb).get('id').replace(/vb_/,'');
+							var page_URL = $(vb).get('href');
+							
+							MochaUI.viewPageWindow = function(){
+								new MochaUI.Window({
+									id: 'viewPage',
+									title: 'View Page',
+									loadMethod: 'iframe',
+									contentURL: page_URL,
+									width: 1100,
+									height: 700,
+									toolbar2: false,
+									type: 'modal',
+									closable: true,
+									toolbar2: true,
+									onContentLoaded: function() {
+										reset_toolbar2('viewPage');
+										toolbar2_button(['ok','Close','#',function(e){ new Event(e).stop(); $('viewPage').destroy(); $('modalOverlay').setStyle('opacity', 0); }],'viewPage');
+									}
+								});
+							}
+							
+							MochaUI.viewPageWindow();
+							
+						});
+						
+					});
+					
+					
+					
+
+					
+				
+{/literal}
+				
+				</script>
+				
+				

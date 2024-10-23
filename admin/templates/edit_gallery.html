@@ -1,0 +1,16 @@
+
+<div id="popup_div" class="edit_gallery">
+
+	<form id="edit_gallery_post" action="photo_galleries" method="post">
+	
+		<p>
+			Gallery Name:
+			<input type="hidden" name="action" value="edit_gallery" />
+			<input type="hidden" name="gallery_ID" value="{$gallery.ID}" />
+		</p>		
+		<p><input type="text" name="gallery_name" id="gallery_name" class="medium_textbox" style="width: 170px;" value="{$gallery.Name}" /></p>
+			
+	</form>
+
+
+</div>

@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		
+		<title>Homebuilt Hi-Fi | Site Administration</title>
+		
+		
+		<base href="{$ROOT}admin/" />
+		
+		
+		<style type="text/css" media="screen"> @import "css/screen_styles.css"; </style>
+		<style type="text/css" media="screen"> @import "css/site_content.css"; </style>
+		
+		<link rel="stylesheet" href="ui/css/content.css" type="text/css" />
+		<link rel="stylesheet" href="ui/css/ui.css" type="text/css" />
+				
+		<script type="text/javascript" src="ui/scripts/mootools-1.2-core.js"></script>
+		<script type="text/javascript" src="ui/scripts/mootools-1.2-more.js"></script>
+		<script type="text/javascript" src="js/ondomready.js"></script>
+		<script type="text/javascript" src="js/mochaCMS.js"></script>
+
+		
+		<!--
+			mocha.js.php is for development. It is not recommended for production.
+			For production it is recommended that you used a compressed version of either
+			the output from mocha.js.php or mocha.js. You could also list the
+			necessary source files individually here in the header though that will
+			create a lot more http requests than a single concatenated file.
+				
+		<script type="text/javascript" src="scripts/mocha.js"></script>
+		
+		-->
+		<script type="text/javascript" src="ui/scripts/source/Utilities/mocha.js.php"></script>
+		<script type="text/javascript" src="ui/scripts/mocha-init.js"></script>
+
+	</head>
+
+	<body>
+		
+		<div id="wrapper_outer">
+			<div id="wrapper_inner">
+			
+				<div id="header">
+				
+{if $logged_in}
+				
+					<div id="current_user">
+						<p>
+							<strong>Logged in as:</strong><br />
+							{$cur_user.First_Name} {$cur_user.Last_Name}
+						</p>
+						<p><a href="#" id="logout_button">Logout</a></p>
+					</div>
+					
+{/if}
+				
+				</div>
+				
+{if $show_menu}
+				
+				<div id="main_menu">				
+					<ul>
+						<li{if $selected == 'admin_home'} class="selected"{/if}><a href="home" class="admin_home">Admin<br />Home</a></li>
+						<li{if $selected == 'site_content'} class="selected"{/if}><a href="content/pages" class="site_content">Site<br />Content</a></li>
+						<!-- <li{if $selected == 'news_articles'} class="selected"{/if}><a href="news_articles" class="news_articles">News &amp;<br />Articles</a></li> -->
+						<li{if $selected == 'image_manager'} class="selected"{/if}><a href="image_manager" class="image_manager">Image<br />Manager</a></li>
+						<li{if $selected == 'file_manager'} class="selected"{/if}><a href="file_manager" class="file_manager">File<br />Manager</a></li>
+						<li{if $selected == 'projects'} class="selected"{/if}><a href="projects" class="projects">Projects</a></li>
+						<li{if $selected == 'builders'} class="selected"{/if}><a href="builders" class="builders">Builders</a></li>
+						<li{if $selected == 'comments'} class="selected"{/if}><a href="comments" class="comments">Comments</a></li>		
+						<!-- <li{if $selected == 'project_images'} class="selected"{/if}><a href="project_images" class="project_images">Project<br />Images</a></li> -->
+						<!-- <li{if $selected == 'photo_galleries'} class="selected"{/if}><a href="photo_galleries" class="photo_galleries">Photo<br />Galleries</a></li> -->
+						<!-- <li{if $selected == 'menu_editor'} class="selected"{/if}><a href="menu_editor" class="menu_editor">Menu<br />Editor</a></li> -->
+						<li{if $selected == 'user_accounts'} class="selected"{/if}><a href="user_accounts" class="user_accounts">User<br />Accounts</a></li>
+						<!-- <li{if $selected == 'statistics'} class="selected"{/if}><a href="statistics" class="statistics">Site<br />Statistics</a></li> -->
+					</ul>				
+				</div>
+				
+{/if}
+				
+{include file="$page_template"}
+			
+			</div>
+		</div>
+
+	</body>
+
+</html>
