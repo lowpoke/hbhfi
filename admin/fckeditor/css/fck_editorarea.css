@@ -1,0 +1,115 @@
+/*
+ * FCKeditor - The text editor for Internet - http://www.fckeditor.net
+ * Copyright (C) 2003-2007 Frederico Caldeira Knabben
+ *
+ * == BEGIN LICENSE ==
+ *
+ * Licensed under the terms of any of the following licenses at your
+ * choice:
+ *
+ *  - GNU General Public License Version 2 or later (the "GPL")
+ *    http://www.gnu.org/licenses/gpl.html
+ *
+ *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
+ *    http://www.gnu.org/licenses/lgpl.html
+ *
+ *  - Mozilla Public License Version 1.1 or later (the "MPL")
+ *    http://www.mozilla.org/MPL/MPL-1.1.html
+ *
+ * == END LICENSE ==
+ *
+ * This is the default CSS file used by the editor area. It defines the
+ * initial font of the editor and background color.
+ *
+ * A user can configure the editor to use another CSS file. Just change
+ * the value of the FCKConfig.EditorAreaCSS key in the configuration
+ * file.
+ */
+
+/*
+    The "body" styles should match your editor web site, mainly regarding
+    background color and font family and size.
+*/
+
+	body {
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 10px;
+		line-height: 1.2em;
+		color: #000000;
+		display: inline;
+		width: 920px;
+		float: left;
+		background-position: top left;
+		background-repeat: no-repeat;
+		margin: 20px;
+		padding: 0;
+	}
+	
+			
+			body h1 {
+				color: #878787;
+				font-size: 24px;
+				line-height: 1em;
+				font-weight: normal;
+				margin: 0 0 28px 0;
+			}
+			
+			body p {
+				font-size: 13px;
+				line-height: 17px;
+				margin-bottom: 17px;
+				color: #585858;
+			}	
+
+
+			
+			body .terms_conditions ol {
+				font-size: 1em;
+				line-height: 1.2em;
+				color: #3a3a3a;
+				margin: 0;
+			}
+			
+						body .terms_conditions ol li {
+							font-size: 1.2em;
+							line-height: 1.2em;
+							list-style-type: decimal;
+							padding-left: 15px; 
+							margin-left: 10px;
+						}
+						
+								body .terms_conditions ol li ol {
+									margin-left: 0;
+									padding-left: 15px;
+								}
+						
+										body .terms_conditions ol li ol li {
+											font-size: 1em;
+											list-style-type: upper-roman;
+											padding-left: 15px; 
+											margin-left: 0;
+										}
+										
+										body .terms_conditions ol li ol li ol li {
+											font-size: 1em;
+											list-style-type: lower-alpha;
+											padding-left: 15px; 
+											margin-left: 0;
+										}
+
+
+	.bold           { font-weight: bold; }
+	.italic         { font-style: italic; }
+	.underline      { text-decoration: underline; }
+	
+	.img_left  { float: left; margin-right: 20px; margin-top: 20px; margin-bottom: 15px; }
+	.img_right { float: right; margin-left: 20px; margin-top: 20px; margin-bottom: 15px; }
+
+
+/* SITE STYLES */
+
+
+
+	
+
+	
