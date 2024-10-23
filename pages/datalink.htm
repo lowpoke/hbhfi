@@ -1,0 +1,61 @@
+{if $user_authenticated == false}
+
+<div id="main_content">
+
+	<img src="images/layout/DataLink.jpg" alt="" />
+
+</div>
+
+{else}
+
+{$datalink_html}
+
+{/if}
+
+
+
+<div id="sidebar">
+
+{if $user_authenticated == false}
+
+<div class="login_form">
+
+<h3>Login</h3>
+
+<form action="datalink" method="post">
+
+{if $process_login}
+	<span class="login_error">{$login_result}</span>
+{/if}
+
+<p>
+	Username<br />
+	<input type="text" name="sant_username" value="{$submitted_username}" class="login_field" />
+</p>
+
+<p>
+	Password<br />
+	<input type="password" name="sant_password" value="" class="login_field" />
+</p>
+
+<input type="image" src="images/layout/login_button.gif" name="sant_login" value="Login" />
+
+</form>
+
+</div>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet cursus magna. Nunc consectetur commodo aliquet.</p>
+
+{else}
+
+<h3>Sidebar Heading</h3>
+
+<p style="text-align: center;"><img src="images/DataLink_Main.jpg" alt="" /></p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet cursus magna. Nunc consectetur commodo aliquet.</p>
+<p>Maecenas in justo lorem. Etiam interdum venenatis nisl vitae tristique. Proin gravida, elit id iaculis iaculis, ipsum tellus hendrerit risus, quis convallis tortor purus ut metus. Nunc condimentum mattis ipsum, a eleifend enim euismod non. Aenean tortor nulla, adipiscing non auctor lacinia, volutpat eu elit. Morbi purus elit, cursus vel ultricies id, vestibulum id est. Proin id enim odio. Fusce iaculis interdum sem nec convallis. Morbi malesuada volutpat scelerisque. </p>
+
+
+
+{/if}
+
+</div>

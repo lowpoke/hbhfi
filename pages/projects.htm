@@ -1,0 +1,67 @@
+
+				<div id="panels">
+					
+					{if $num_projects > 0}
+					
+					<div id="panel_slide" class="1">
+		
+						{$projects_html}
+					
+					</div>
+					
+					{else}
+					
+						{if $mode == 'search'}
+						
+							<div id="main_content">
+			
+								<p>&nbsp;</p>
+								<p>&nbsp;</p>
+                                
+								
+								<p>Your search for <strong>{$q}</strong> returned no results.</p>
+								
+							</div><p>&nbsp;</p>
+						
+						{else}
+						
+							<div id="no_projects" class="{$project_category}"></div>	
+						
+						{/if}
+					
+					{/if}
+					
+				</div>
+                					
+				{if $show_pagination}
+				
+				<div id="pagination">
+					<ul>
+						{if $pagination_prev.show}<li><a href="{$project_category}/page/{$pagination_prev.page}">&laquo;</a></li>{/if}
+						
+						{foreach from=$pagination_links item=pagination}
+						
+						<li><a href="{$project_category}/page/{$pagination.page}"{if $pagination.selected} class="selected"{/if}>{$pagination.page}</a></li>
+						
+						{/foreach}
+						
+						{if $pagination_next.show}<li><a href="{$project_category}/page/{$pagination_next.page}">&raquo;</a></li>{/if}
+					</ul>
+				</div>
+       				
+				{/if}
+
+				{literal} 	
+				<div id="leaderboard" class="advert">									
+						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+							<!-- Leaderboard -->
+							<ins class="adsbygoogle"
+								 style="display:inline-block;width:728px;height:90px"
+								 data-ad-client="ca-pub-1900575144759514"
+								 data-ad-slot="9520346982"></ins>
+							<script>
+							(adsbygoogle = window.adsbygoogle || []).push({});
+						</script>
+								
+				</div>
+				{/literal}		

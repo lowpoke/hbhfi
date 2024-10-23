@@ -1,0 +1,70 @@
+
+				<div id="builder_details">
+				
+					<h3>Builder</h3>
+					
+					<ul class="details">
+						<li><em>Nickname:</em> {$builder.builder_short_name}</li>
+						<li><em>Name:</em> {$builder.builder_first_name} {$builder.builder_last_name}</li>
+						<li><em>Country:</em> {$builder.builder_country}</li>
+						<li><em>Projects:</em> {$num_projects}</li>
+						<li><em>Comments:</em> {$num_comments}</li>
+					</ul>
+									
+					{if $num_comments > 0}
+					
+					<div id="builder_comments">
+		
+						<h3>Recent Comments</h3>
+					
+						{foreach from=$builder_comments item=comment}
+						
+						<ul class="comment">	
+							<li class="comment_builder_name"><a href="project/{$comment.project_id}">{$comment.project_name}</a></li>
+							<li class="comment_posted">{$comment.comment_posted|date_format:"%e %B %Y at %I:%M%p"}</li>
+							<li class="comment_text">{$comment.comment_comment}</li>
+						</ul>
+						
+						{/foreach}
+						
+					</div>
+					
+					{/if}
+				
+				</div>
+				
+				
+				<div id="builder_projects">
+					
+					<h3>Projects</h3>
+					
+					{if $num_projects > 0}
+		
+						{$projects_html}
+					
+					{else}
+					
+					<img src="images/layout/no_projects/builder.png" alt="No Projects" class="no_projects" />
+					
+					{/if}
+					
+				</div>
+				
+				
+				{if $show_pagination}
+				
+				<div id="pagination">
+					<ul>
+						{if $pagination_prev.show}<li><a href="{$project_category}/builder/{$builder.builder_id}/page/{$pagination_prev.page}">&laquo;</a></li>{/if}
+						
+						{foreach from=$pagination_links item=pagination}
+						
+						<li><a href="{$project_category}/builder/{$builder.builder_id}/page/{$pagination.page}"{if $pagination.selected} class="selected"{/if}>{$pagination.page}</a></li>
+						
+						{/foreach}
+						
+						{if $pagination_next.show}<li><a href="{$project_category}/builder/{$builder.builder_id}/page/{$pagination_next.page}">&raquo;</a></li>{/if}
+					</ul>
+				</div>
+				
+				{/if}

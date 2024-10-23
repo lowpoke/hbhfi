@@ -1,0 +1,105 @@
+					
+					<div id="main_content">
+					
+{if $show_article == true}
+					
+						<h1 class="main_article_headline">{$article.Headline}</h1>
+						
+						<div class="main_article_date">
+							<strong>{$article.Day}, {$article.Date} {$article.Month}, {$article.Year}</strong> - 
+							{$article.Time}
+						</div>
+						
+						<div class="article_content">
+							
+							<div class="article_content">{$article.Content}</div>
+						
+						</div>
+
+{else}
+
+						<h1>Latest News</h1>
+												
+	{if $show_cat}
+	
+			{if $num_articles > 0}
+						<p class="num_articles">Found <strong>{$num_articles}</strong> article{$num_articles_plural} in <strong>{$news_cat.Name}</strong></p>
+			{else}
+						<p class="num_articles">No articles in <strong>{$news_cat.Name}</strong></p>
+			{/if}
+	
+	{/if}
+						
+						
+	{foreach from=$articles key=articleID item=article}
+	
+						<div class="article">
+						
+							<h2><a href="{$ROOT}news/{$article.URL}">{$article.Headline}</a></h2>
+						
+							<span class="article_date">
+								<strong>{$article.Date} {$article.Month}, {$article.Year}</strong> - {$article.Time}
+							</span>
+							
+							<p>{$article.Summary}</p>
+							<p><strong><a href="{$ROOT}news/{$article.URL}">Read more...</a></strong></p>
+						
+						</div>
+	
+	{/foreach}
+	
+						
+						<div class="news_nav">
+						{if $show_older} 
+							<a href="{$ROOT}news/page/{$older_page}" class="left">&laquo; Older Articles</a>
+						{/if} 
+						{if $show_newer} 
+							<a href="{$ROOT}news/page/{$newer_page}" class="right">Newer Articles &raquo;</a>
+						{/if} 
+						</div>
+					
+{/if}
+					
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<div id="sidebar">
+
+						<h3 class="news_cats">News Categories</h3>
+						<div class="news_cats">
+							<a href="{$ROOT}news">Latest News</a><br />
+
+{foreach from=$categories key=categoryID item=category}
+
+							<a href="{$ROOT}news/category/{$category.Name}">{$category.Name}</a><br /> 
+
+{/foreach} 
+
+						</div>
+						
+						<h3 class="news">Latest News</h3>
+						<div class="latest_news">
+						
+{foreach from=$latest_news key=latestID item=latest}
+							
+							<h4>{$latest.Headline}</h4>
+							<p>
+								{$latest.Summary}<br />
+								<a href="{$ROOT}news/{$latest.URL}">More ...</a>
+							</p>
+							
+{/foreach} 
+											
+						</div>					
+					
+					</div>

@@ -1,0 +1,25 @@
+<div class="login_form">
+
+<h3>Login</h3>
+
+<form action="{$page_url}" method="post">
+
+{if $process_login}
+	<span class="login_error">{$login_result}</span>
+{/if}
+
+<p>
+	Username<br />
+	<input type="text" name="sant_username" value="{$submitted_username}" class="login_field" />
+</p>
+
+<p>
+	Password<br />
+	<input type="password" name="sant_password" value="" class="login_field" />
+</p>
+
+<input type="image" src="images/layout/login_button.gif" name="sant_login" value="Login" />
+
+</form>
+
+</div>

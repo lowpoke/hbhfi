@@ -1,0 +1,404 @@
+		{if $section == 'details'}
+				
+				<div id="submit_left">
+				
+					<h2>UPDATE PROJECT</h2>
+					
+					<p>The aim of Homebuilt Hi-fi is to showcase some of the most outstanding hi-fi projects being built by dedicated enthusiasts from all over the world. Sadly, we will never be able to fully appreciate how good these components actually sound.</p>
+					<p>It is for this reason that we've chosen to focus on attributes we can fully appreciate using this media Ñ aesthetics and design. So if you have a project that not only sounds great, but has been thoughtfully designed, skillfully executed and painstakingly assembled, we would love for you to contribute to the gallery.</p>
+				
+				</div>
+				
+				<ul id="update_nav">
+					<li class="on"><a href="update/{$project.project_id}">Details</a></li>
+					<li><a href="update/{$project.project_id}/images">Images</a></li>
+					<li><a href="update/{$project.project_id}/thumbnail">Thumbnail</a></li>
+					<li><a href="update/{$project.project_id}/youtube">YouTube</a></li>
+				</ul>
+				
+				<div id="submit_right">
+				
+					<h3>Project details...</h3>
+				
+					<form action="update/save" method="post">
+						<input type="hidden" name="section" value="details" />
+						<input type="hidden" name="project_id" value="{$project.project_id}" />
+						
+						{if $post_valid == false && $validation_text != ''} 
+						
+						<div id="form_validation">
+							
+							<ul>
+								<li>{$validation_text}</li>
+							</ul>						
+							
+						</div>
+						
+						{/if}
+					
+						<ul class="form">
+						
+							<li>
+								<label for="project_type">Category:</label>
+								<select name="project_category" id="project_category" class="select_field validate['required','select']{if in_array('project_category',$error_fields)} error{/if}">
+									<option value="NULL">Select...</option>
+									<option value="1"{if $project.project_category == 1 || $smarty.post.project_category == 1} selected="selected"{/if}>Vinyl</option>
+									<option value="2"{if $project.project_category == 2 || $smarty.post.project_category == 2} selected="selected"{/if}>Amps</option>
+									<option value="3"{if $project.project_category == 3 || $smarty.post.project_category == 3} selected="selected"{/if}>Speakers</option>
+									<option value="4"{if $project.project_category == 4 || $smarty.post.project_category == 4} selected="selected"{/if}>Digital</option>
+									<option value="5"{if $project.project_category == 5 || $smarty.post.project_category == 5} selected="selected"{/if}>Analog</option>
+									<option value="6"{if $project.project_category == 6 || $smarty.post.project_category == 6} selected="selected"{/if}>Mods</option>
+								</select>
+							</li>
+							
+							<li>
+								<label for="project_item">Item:</label>
+								<input type="text" name="project_item" id="project_item" class="text_field validate['required']{if in_array('project_item',$error_fields)} error{/if}" value="{if isset($smarty.post.project_item)}{$smarty.post.project_item}{else}{$project.project_item}{/if}" />
+							</li>
+							
+							<li>
+								<label for="project_type">Type/Model:</label>
+								<input type="text" name="project_type" id="project_type" class="text_field{if in_array('project_type',$error_fields)} error{/if}" value="{if isset($smarty.post.project_type)}{$smarty.post.project_type}{else}{$project.project_type}{/if}" />
+							</li>
+							
+							<li>
+								<label for="project_name">Project Name:</label>
+								<input type="text" name="project_name" id="project_name" class="text_field{if in_array('project_name',$error_fields)} error{/if}" value="{if isset($smarty.post.project_name)}{$smarty.post.project_name}{else}{$project.project_name}{/if}" />
+							</li>
+							
+							<li>
+								<label for="project_description">Description:</label>
+								<textarea name="project_description" id="project_description" class="text_field{if in_array('project_description',$error_fields)} error{/if}" cols="50" rows="10">{if isset($smarty.post.project_description)}{$smarty.post.project_description}{else}{$project.project_description}{/if}</textarea>
+							</li>
+						
+						</ul>
+						
+						<div class="steps">
+							<input id="submit_button" type="submit" value="Save &raquo;" />
+						</div>
+					
+					</form>
+				
+				</div>
+				
+		
+		{elseif $section == 'images'}
+				
+				<ul id="update_nav">
+					<li><a href="update/{$project.project_id}">Details</a></li>
+					<li class="on"><a href="update/{$project.project_id}/images">Images</a></li>
+					<li><a href="update/{$project.project_id}/thumbnail">Thumbnail</a></li>
+					<li><a href="update/{$project.project_id}/youtube">YouTube</a></li>
+				</ul>
+				
+				<div id="submit_left">
+				
+					<h2>UPDATE PROJECT</h2>
+					
+					<p>Please take the time prior to uploading your images to ensure they are of a reasonable standard. You can upload up to five images;</p>
+					<ul>
+						<li>Have you photographed your project on a clean, uncluttered surface?</li>
+						<li>Are your photographs in focus?</li>
+						<li>Does your image set portray all the key features of your project?</li>
+					</ul>
+					
+					<p>The layout used on our project pages lends itself to images that are in a landscape format (wide). That's not to say you can't include any images in portrait format (long), but it may make your project page very long. </p>
+					<p>Try to include at least one photograph of the project in its entirety, along with a few close ups so we can appreciate the detail.</p>
+					
+				</div>
+				
+				<div id="submit_right">
+					
+					<h3>Current images...</h3>
+					
+					{if $post_valid == false && $error_text != ''} 
+						
+						<div id="form_validation">
+							
+							<ul>
+								{$error_text}
+							</ul>						
+							
+						</div>
+						
+					{/if}
+					
+					
+					{if $num_images == 0}
+						<p><i>This project doesn't have any images.</i></p>
+						
+					{else}
+					<div id="image_edit_list">
+						
+						{foreach from=$project_images item=image}
+							{if $image.image_type == 'full'}
+								<div class="img">
+									<img src="inc/img.php?dimension=c143&image={$image.image_filename}&folder=projects/{$project.project_id}/" alt="" title="{$image.image_filename}"/>
+									<ul id="project_tools">
+										<li><a href="update/{$project.project_id}/image_delete/{$image.image_id}">Delete Image</a></li>
+									</ul>
+		 						</div>
+							{/if}
+						{/foreach}
+						
+						<div style="clear: both;"></div>
+					</div>
+					{/if}
+					
+					
+					{if $num_images < 5}
+					
+					<h3>Upload {if $num_images > 0}another{/if} image...</h3>
+					
+					<form action="update/save" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="section" value="image_upload" />
+						<input type="hidden" name="project_id" value="{$project.project_id}" />
+						
+						<ul class="form">
+							<li>
+								<input type="file" name="new_image" class="text_field" />
+							</li>
+							<li>
+								<input id="submit_button" type="submit" value="Upload Image" />
+							</li>
+						</ul>
+						
+						<p>&nbsp;</p>
+					</form>
+					
+					{/if}
+				</div>
+				
+				
+		{elseif $section == 'image_delete'}
+				
+				<div id="submit_left">
+				
+					<h2>UPDATE PROJECT</h2>
+					
+					<p>Please take the time prior to uploading your images to ensure they are of a reasonable standard. You can upload up to five images;</p>
+					<ul>
+						<li>Have you photographed your project on a clean, uncluttered surface?</li>
+						<li>Are your photographs in focus?</li>
+						<li>Does your image set portray all the key features of your project?</li>
+					</ul>
+					
+					<p>The layout used on our project pages lends itself to images that are in a landscape format (wide). That's not to say you can't include any images in portrait format (long), but it may make your project page very long. </p>
+					<p>Try to include at least one photograph of the project in its entirety, along with a few close ups so we can appreciate the detail.</p>
+					
+				</div>
+				
+				<div id="submit_right">
+					
+					<h3>Delete image...</h3>
+					
+					<img src="images/projects/{$project.project_id}/{$image.image_filename}">
+					
+					<form action="update/save" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="section" value="image_delete" />
+						<input type="hidden" name="project_id" value="{$project.project_id}" />
+						<input type="hidden" name="image_id" value="{$image.image_id}" />
+						
+						<div class="steps">
+							<a href="update/{$project.project_id}/images">Cancel</a>
+							<input id="submit_button" type="submit" value="Delete image" />
+						</div>
+						
+					</form>
+					
+				</div>
+				
+				
+		{elseif $section == 'thumbnail'}
+				
+				<ul id="update_nav">
+					<li><a href="update/{$project.project_id}">Details</a></li>
+					<li><a href="update/{$project.project_id}/images">Images</a></li>
+					<li class="on"><a href="update/{$project.project_id}/thumbnail">Thumbnail</a></li>
+					<li><a href="update/{$project.project_id}/youtube">YouTube</a></li>
+				</ul>
+				
+				<div id="submit_left">
+					
+					<h2>UPDATE PROJECT</h2>
+					
+					<div style="min-height: 279px;">
+						<p>To the right are your current project images.</p>
+						<p>Please choose your most prized photograph from the list by clicking on it. The large image will be replaced by your choice and a selection box will be overlaid.</p>
+						<p>You can click and drag around as well as resize the selection box using the handles in the corners.	A preview of your thumbnail appears on the left.</p>
+					</div>
+					
+					<h2>Thumbnail preview:</h2>
+					
+					<div style="width: 290px; float: left; position: relative;"><div id="thumb_preview"></div></div>
+					
+				</div>
+				
+				<div id="submit_right">
+					
+					<h3>Select image...</h3>
+					
+					<div id="image_thumbnails" class="image_thumbnails" style="min-height: 250px;">
+					
+					{foreach from=$image_thumbnails item=thumbnail}
+					
+						<img src="inc/img.php?dimension=c143&image={$thumbnail.image_filename}&folder=projects/{$project.project_id}/" alt="" title="{$thumbnail.image_filename}" style="cursor:pointer" />
+					
+					{/foreach}
+						<div style="clear:both;"></div>
+					</div>
+					
+					<h3>Choose thumbnail area...</h3>
+				
+					<form action="update/save" method="post" id="thumb_form">
+						<input type="hidden" name="section" value="thumbnail" />
+						<input type="hidden" name="project_id" value="{$project.project_id}" />
+						<input type="hidden" name="thumbnail_file" id="thumbnail_file" value="{$first_image.image_filename}" />
+						
+						<div class="thumb_crop_container"><img id="thumb_crop" src="images/projects/{$project.project_id}/{$first_image.image_filename}" alt=""/></div>
+						
+						<div class="steps">
+							<div id="save_spinner"><img src="images/layout/loader.gif" alt="" style="vertical-align: middle;" /> &nbsp;</div>
+							
+							<input id="save_thumb" type="submit" value="Save &raquo;" />
+						</div>
+					</form>
+				
+				</div>
+				
+				<script type="text/javascript">
+					var images_path = 'images/projects/{$project.project_id}/';
+				{literal}
+					
+					$$('#image_thumbnails img').each(function(t) {
+					
+						t.addEvent('click',function() {
+						
+							var img_url = t.get('title');
+							
+							//console.log('thumbCrop.changeImage: \'' + images_path + img_url + '\'');
+							
+							thumbCrop.changeImage(images_path + img_url);
+							$('thumbnail_file').value = img_url;
+						
+						});
+					
+					});
+					
+					$('save_thumb').addEvent('click',function(e) {
+					
+						new Event(e).stop();
+						
+						$('save_thumb').disabled = 1;
+						$('save_thumb').set('value','Please wait...');
+						var save_spinner = $('save_spinner');
+						save_spinner.fade('show');
+											
+						thumbCrop.cropSave({images_path: images_path},function(){ $('thumb_form').submit(); });
+						
+					});
+					
+					
+				{/literal}
+				</script>
+				
+				
+		{elseif $section == 'youtube'}
+				
+				<div id="submit_left">
+				
+					<h2>UPDATE PROJECT</h2>
+					
+					<p>The aim of Homebuilt Hi-fi is to showcase some of the most outstanding hi-fi projects being built by dedicated enthusiasts from all over the world. Sadly, we will never be able to fully appreciate how good these components actually sound.</p>
+					<p>It is for this reason that we've chosen to focus on attributes we can fully appreciate using this media - aesthetics and design. So if you have a project that not only sounds great, but has been thoughtfully designed, skillfully executed and painstakingly assembled, we would love for you to contribute to the gallery.</p>
+				
+				</div>
+				
+				<ul id="update_nav">
+					<li><a href="update/{$project.project_id}">Details</a></li>
+					<li><a href="update/{$project.project_id}/images">Images</a></li>
+					<li><a href="update/{$project.project_id}/thumbnail">Thumbnail</a></li>
+					<li class="on"><a href="update/{$project.project_id}/youtube">YouTube</a></li>
+				</ul>
+				
+				<div id="submit_right">
+				
+					<h3>YouTube video...</h3>
+				
+					<form action="update/save" method="post">
+						<input type="hidden" name="section" value="youtube" />
+						<input type="hidden" name="project_id" value="{$project.project_id}" />
+						
+						{if $post_valid == false && $validation_text != ''} 
+						
+						<div id="form_validation">
+							
+							<ul>
+								<li>{$validation_text}</li>
+							</ul>
+							
+						</div>
+						
+						{/if}
+						
+						<p>To attach a YouTube video to your project, you need to copy-and-paste the Share URL into the field below.</p>
+						
+						<p>
+							To get the Share URL for a video, click on the <i>Share</i> button when viewing the video.
+							The URL will be shown in the text box.
+							Share URLs look like <code>http://youtu.be/KbrkSeuhSxw</code>
+						</p>
+						
+						<p>Your video will be displayed in a widescreen (16:9) format. Other sizes are supported, but they will be letterboxed.</p>
+						
+						<ul class="form">
+						
+							<li>
+								<label for="project_item">Video URL:</label>
+								<input type="text" name="project_youtube" id="project_youtube" class="text_field validate['required']{if in_array('project_item',$error_fields)} error{/if}" value="{if isset($smarty.post.project_youtube)}{$smarty.post.project_youtube}{else}{$project.project_youtube}{/if}" />
+							</li>
+						
+						</ul>
+						
+						<div class="steps">
+							<input id="submit_button" type="submit" value="Save &raquo;" />
+						</div>
+					
+					</form>
+				
+				</div>
+				
+		{elseif $section == 'invalid'}
+		
+				<div id="submit_left">
+				
+					<h2>ACCESS DENIED</h2>
+					
+					<p>This isn't your project. You can't edit it.</p>
+					
+					<ul id="nextstep_links">
+						<li><a href="project/{$project.project_id}">Return to project</a></li>
+						<li><a href="submit">Submit your own project</a></li>
+					</ul>
+				</div>
+				
+		
+		{elseif $section == 'confirm'}
+		
+				<div id="submit_left">
+				
+					<h2>UPDATE SUCCESSFUL</h2>
+					
+					<p>Your project has been updated successfully.</p>
+					
+					<ul id="nextstep_links">
+						<li><a href="project/{$project.project_id}">Return to project</a></li>
+						<li><a href="update/{$project.project_id}">Continue editing</a></li>
+						<li><a href="submit">Submit another project</a></li>
+					</ul>
+					
+				</div>
+				
+		{/if}
+		
+		
